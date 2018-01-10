@@ -1,0 +1,150 @@
+<!--
+  /**
+ * Magento Community Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    RM
+ * @package     ReportMappe_SalesReportMaps
+ * @created     10th January 2018 3.00pm
+ * @author      ReportMapper magento team <support@reportmapper.com>
+ * @purpose     ReportMapper block
+ * @copyright   Copyright (c) 2018 ReportMapper.com
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License
+ */
+-->
+<?xml version="1.0"?>
+<config>
+	<modules>
+	  <ReportMapper_SalesReportMaps>
+	    <version>1.0.0</version>
+	  </ReportMapper_SalesReportMaps>
+	</modules>
+	<global>
+        <blocks>
+            <reportmapper_salesreportmaps>
+                <class>ReportMapper_SalesReportMaps_Block</class>
+            </reportmapper_salesreportmaps>
+        </blocks>
+        <helpers>
+            <reportmapper_salesreportmaps>
+                <class>ReportMapper_SalesReportMaps_Helper</class>
+            </reportmapper_salesreportmaps>
+        </helpers>
+        
+ 		<resources>
+            <reportmapper_salesreportmaps_setup>
+                <setup>
+                    <module>ReportMapper_SalesReportMaps</module>
+                </setup>
+		        <connection>
+		            <use>core_setup</use>
+		        </connection>
+            </reportmapper_salesreportmaps_setup>
+			<reportmapper_salesreportmaps_write>
+			        <connection>
+			            <use>core_write</use>
+			        </connection>
+			</reportmapper_salesreportmaps_write>
+			<reportmapper_salesreportmaps_read>
+			    <connection>
+			        <use>core_read</use>
+			    </connection>
+			</reportmapper_salesreportmaps_read>
+        </resources>
+        <models>
+            <reportmapper_salesreportmaps>
+                <class>ReportMapper_SalesReportMaps_Model</class>
+            </reportmapper_salesreportmaps>
+        </models>
+	</global>
+    <admin>
+        <routers>
+            <adminhtml>
+            <use>admin</use>
+                <args>
+                    <modules>
+                        <reportmapper_salesreportmaps before="Mage_Adminhtml">ReportMapper_SalesReportMaps_Adminhtml</reportmapper_salesreportmaps>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+        <adminhtml>
+        <layout>
+            <updates>
+                <reportmapper_salesreportmaps>
+                    <file>reportmapper/salesreportmaps/salesreportmaps.xml</file>
+                </reportmapper_salesreportmaps>
+            </updates>
+        </layout>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <user_data>
+                                            <title>ReportMapper SalesMapper Config</title>
+                                        </user_data>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+						<reportmapper translate="title" module="reportmapper_salesreportmaps">
+					        <title>ReportMapper</title>
+					        <sort_order>110</sort_order>
+					        <children>
+						      <reportmapper-maps translate="title" module="reportmapper_salesreportmaps">
+						        <title>United Kingdom</title>
+						        <sort_order>10</sort_order>
+						        <children>
+									<salesreportmaps_mapper translate="title" module="reportmapper_salesreportmaps">
+									<title>Postcode Areas</title>
+									<action>adminhtml/index/mapper</action>
+									<sort_order>20</sort_order>           
+									</salesreportmaps_mapper>
+								</children>
+						      </reportmapper-maps>
+							</children>
+					     </reportmapper>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <events>
+            <controller_action_predispatch>
+                <observers>
+                    <reportmapper_getupdate>
+                        <type>singleton</type>
+                        <class>ReportMapper_SalesReportMaps_Model_Observer</class>
+                        <method>controllerActionPredispatch</method>
+                    </reportmapper_getupdate>
+                </observers>
+            </controller_action_predispatch>
+        </events>
+    </adminhtml>
+    <default>
+        <system>
+            <reportmapper_salesreportmaps>
+                <feed_url>www.reportmapper.com/updates.rss</feed_url>
+            </reportmapper_salesreportmaps>
+        </system>
+    </default>
+</config> 

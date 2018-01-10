@@ -1,0 +1,322 @@
+/**
+* Magento Community Edition
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Open Software License (OSL 3.0)
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/osl-3.0.php
+* If you did not receive a copy of the license and are unable to
+* obtain it through the world-wide-web, please send an email
+* to license@magentocommerce.com so we can send you a copy immediately.
+*
+* DISCLAIMER
+*
+* Do not edit or add to this file if you wish to upgrade Magento to newer
+* versions in the future. If you wish to customize Magento for your
+* needs please refer to http://www.magentocommerce.com for more information.
+*
+* @category    RM
+* @package     ReportMappe_SalesReportMaps
+* @created     10th January 2018 3.00pm
+* @author      ReportMapper magento team <support@reportmapper.com>
+* @purpose     ReportMapper block
+* @copyright   Copyright (c) 2018 ReportMapper.com
+* @license     http://opensource.org/licenses/osl-3.0.php  Open Software License
+*/
+.mapform {
+    width: 218px;
+    margin: 0px;
+    padding: 0px;
+}
+.entry-edit .fieldset {
+    margin: 0px;
+    padding: 0px;
+}
+.label_pc {
+    position: absolute;
+    left: 300px;
+    top: 200px;
+    width: 220px;
+
+    visibility: hidden;
+}
+.form-list td.label,
+.form-list td.value,
+.form-list td.value2,
+.form-list td.note,
+.form-list td.scope-label,
+.form-list td.use-default {
+    border: 0 !important;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+    padding-left: 0px !important;
+    background: 0 !important;
+}
+.map_form_button {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #ed6502 #a04300 #a04300 #ed6502;
+    padding: 1px 7px 2px 7px;
+    background: #ffac47 url(images/btn_bg.gif) repeat-x 0 100%;
+    color: #fff;
+    font: bold 12px arial, helvetica, sans-serif;
+    cursor: pointer;
+    text-align: center !important;
+    white-space: nowrap;
+}
+.map_form_button:hover {
+    background: #f77c16 url(images/btn_over_bg.gif) repeat-x 0 0;
+}
+ul.salesdata {
+    float: left;
+    width: 220px;
+    background: #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    -webkit-box-shadow: 5px 5px 3px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 5px 5px 3px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 5px 5px 3px 0px rgba(0, 0, 0, 0.5);
+    -webkit-print-color-adjust: exact;
+    color: #666666;
+}
+ul.salesdata h1 {
+    margin: 10px;
+    color: #666666;
+    background: #ffffff;
+}
+div.resultrowodd {
+    float: left;
+    width: 220px;
+    background: #e6e6e6;
+    color: #2f2f2f;
+    font: 12px/1.5em Arial, Helvetica, sans-serif;
+}
+div.resultroweven {
+    float: left;
+    width: 220px;
+    background: #ffffff;
+    color: #2f2f2f;
+    font: 12px/1.5em Arial, Helvetica, sans-serif;
+}
+div.product {
+    float: left;
+    width: 149px;
+    /*background: lightblue;*/
+
+    padding-left: 5px;
+}
+div.aa {
+    float: right;
+    width: 60px;
+    /*background: #ccc;	*/
+
+    border-left: 1px solid #dddddd;
+    padding-left: 5px;
+}
+div.productlabel {
+    float: left;
+    width: 149px;
+    background: #fff9e9;
+    /*background: lightblue;*/
+
+    padding-left: 5px;
+    color: #eb5e00;
+    font-weight: bold;
+}
+div.aalabel {
+    float: right;
+    width: 60px;
+    ;
+    background: #fff9e9;
+    /*background: #ccc;	*/
+
+    color: #eb5e00;
+    font-weight: bold;
+    border-left: 1px solid #dddddd;
+    padding-left: 5px;
+}
+.bgcol {
+    /*border-bottom:1px solid #fff !important;*/
+}
+.postcode_outer_div {
+    float: left;
+    /*border: 1px solid #cccccc;*/
+
+    margin: 0px 5px 5px 0px;
+    /*width: 200px;*/
+}
+.postcode_div {
+    float: left;
+    border: 1px solid #cccccc;
+    margin: 0px 0px 5px 5px;
+    /*width: 200px;*/
+}
+.postcode_div .row_div_odd {
+    clear: both;
+    float: left;
+    margin: 0px;
+    width: 200px;
+    height: 25px;
+    border-bottom: 1px solid #cccccc;
+}
+div.row_div_odd {
+    clear: both;
+    float: left;
+    margin: 0px;
+    width: 200px;
+    height: 25px;
+    border-bottom: 1px solid #cccccc;
+}
+.postcode_div .row_div_even {
+    clear: both;
+    float: left;
+    margin: 0px;
+    width: 200px;
+    background: #e6e6e6;
+    height: 25px;
+    border-bottom: 1px solid #cccccc;
+}
+div.row_div_even {
+    clear: both;
+    float: left;
+    margin: 0px;
+    width: 200px;
+    background: #e6e6e6;
+    height: 25px;
+    border-bottom: 1px solid #cccccc;
+}
+.postcode_div .row_div_odd cell_div,
+.postcode_div .row_div_odd cell_div {
+    text-align: center;
+}
+.bgcol {
+    width: 50px;
+    height: 25px;
+    float: left;
+}
+.row_col_header {
+    min-width: 50px;
+    float: left;
+    margin: 0px;
+    border-bottom: 1px solid #cccccc;
+    background: #fff9e9;
+    color: #eb5e00;
+    font-weight: bold;
+}
+.row_col {
+    width: 50px;
+    float: left;
+    margin: 0px;
+    height: 25px;
+}
+.row_area_header {
+    text-align: center;
+    width: 35px;
+    float: left;
+    margin: 0px;
+    border-bottom: 1px solid #cccccc;
+    background: #fff9e9;
+    color: #eb5e00;
+    font-weight: bold;
+}
+.row_area {
+    border-left: 1px solid #c0c0c0;
+    text-align: center;
+    width: 35px;
+    float: left;
+    margin: 0px;
+    height: 25px;
+    line-height: 25px;
+	font-weight: bold;;
+}
+.row_a_header {
+    text-align: center;
+    width: 60px;
+    float: left;
+    margin: 0px;
+    border-bottom: 1px solid #cccccc;
+    background: #fff9e9;
+    color: #eb5e00;
+    font-weight: bold;
+}
+.row_a {
+    text-align: center;
+    width: 60px;
+    float: left;
+    margin: 0px;
+    height: 25px;
+    line-height: 25px;
+}
+.row_b_header {
+    text-align: center;
+    width: 54px;
+    float: left;
+    margin: 0px;
+    border-bottom: 1px solid #cccccc;
+    background: #fff9e9;
+    color: #eb5e00;
+    font-weight: bold;
+}
+.row_b {
+    text-align: center;
+    width: 54px;
+    float: left;
+    margin: 0px;
+    height: 25px;
+    line-height: 25px;
+}
+.postcode_table {
+    float: left;
+    border: 1px solid #cccccc;
+    margin: 0px 5px 5px 0px;
+}
+.postcode_table tr {
+    background: #ffffff;
+    text-align: center;
+}
+.postcode_table tr td {
+    border-bottom: 1px solid #888888;
+    text-align: center;
+}
+.caption {
+    font-size: 14px;
+}
+.tooltip {
+    font-size: 18px;
+    padding: 10px;
+}
+.tooltip_bg {
+    fill: #ffffff;
+    stroke: black;
+    stroke-width: 1;
+    opacity: 1;
+    white-space: pre-wrap;
+}
+svg {
+    float: left;
+    background: #FFFFFF;
+    border: 1px solid #cccccc;
+}
+p {
+    text-align: center;
+}
+h1.print_only{
+	display:none;
+}
+	.rm_licence_validation{
+		float:left;
+		clear:both;
+		z-index: 99999;
+		width:100%;
+	}
+	p.rm_footer{
+		float:left;
+		clear:both;
+		z-index: 99999;
+	}
+	
+.clearfix:before, .clearfix:after{  
+    display: block!important;
+}

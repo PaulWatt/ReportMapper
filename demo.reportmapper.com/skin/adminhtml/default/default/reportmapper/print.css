@@ -1,0 +1,89 @@
+/**
+* Magento Community Edition
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Open Software License (OSL 3.0)
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/osl-3.0.php
+* If you did not receive a copy of the license and are unable to
+* obtain it through the world-wide-web, please send an email
+* to license@magentocommerce.com so we can send you a copy immediately.
+*
+* DISCLAIMER
+*
+* Do not edit or add to this file if you wish to upgrade Magento to newer
+* versions in the future. If you wish to customize Magento for your
+* needs please refer to http://www.magentocommerce.com for more information.
+*
+* @category    RM
+* @package     ReportMappe_SalesReportMaps
+* @created     10th January 2018 3.00pm
+* @author      ReportMapper magento team <support@reportmapper.com>
+* @purpose     ReportMapper block
+* @copyright   Copyright (c) 2018 ReportMapper.com
+* @license     http://opensource.org/licenses/osl-3.0.php  Open Software License
+*/
+	body {
+    -webkit-print-color-adjust: exact;
+	}
+	div.label_pc {
+	background-color: white !important;
+	}
+	div.row_area {
+	    text-align: center !important;
+	}
+	div.side-col {
+	    display: none;
+	}
+	div.main-col {
+	    margin-left: 0px;
+	    padding: 0 0 25px 25px;
+	}
+	svg {
+		float:left;
+		width: 98% !important;
+		height: 1200px !important;
+		margin-top: 50px !important;
+		margin-bottom: 100px !important;
+	}
+	div.page-break	{ 
+		float:left;
+		clear:both;
+		display: block; 
+		page-break-after: always !important;
+		page-break-inside: avoid;
+	}
+	.map_form_button {
+		display: none;
+	}
+h1.print_only{
+	margin: 20px 0px 50px 0px;
+	display:block;
+	float:left;
+}
+  .page-break { page-break-inside: avoid; page-break-after: always; margin-top:10px !important;}
+  .dont-print { display: none; }
+
+	.rm_licence_validation{
+		float:left;
+		clear:both;
+		z-index: 99999;
+		width:100%;
+	}
+	p.rm_footer{
+		float:left;
+		clear:both;
+		z-index: 99999;
+	}
+	.postcode_outer_div {
+	z-index: 99999;
+	position:relative;
+	background-color: white !important;
+	margin: 0;
+	padding: 0;
+	}
+	.clearfix:before, .clearfix:after{  
+    display: block!important;
+}
