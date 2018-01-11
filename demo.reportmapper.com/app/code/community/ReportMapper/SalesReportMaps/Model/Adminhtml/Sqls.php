@@ -24,7 +24,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
                     FROM ' . $prefix . 'sales_flat_order_address
                     LEFT JOIN ' . $prefix . 'sales_flat_order ON ' . $prefix . 'sales_flat_order_address.parent_id = ' . $prefix . 'sales_flat_order.entity_id
                     RIGHT JOIN ' . $prefix . 'sales_flat_order_item ON ' . $prefix . 'sales_flat_order.entity_id = ' . $prefix . 'sales_flat_order_item.order_id
-                    WHERE address_type = "' . $addresstype . '"
+                    WHERE ' . $prefix . 'sales_flat_order_address.country_id = "GB" AND address_type = "' . $addresstype . '"
                     ' . $extendedsql1 . $extendedsql2 . $extendedsql5 . '
                     AND ' . $prefix . 'sales_flat_order.created_at BETWEEN "' . $fromdate . '" AND "' . $todate . '"
                     GROUP BY UPPER(pc)
@@ -41,7 +41,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
                         FROM ' . $prefix . 'sales_flat_order_address
                         LEFT JOIN ' . $prefix . 'sales_flat_order ON ' . $prefix . 'sales_flat_order_address.parent_id = ' . $prefix . 'sales_flat_order.entity_id
                         LEFT JOIN ' . $prefix . 'sales_flat_order_item ON ' . $prefix . 'sales_flat_order_address.parent_id = ' . $prefix . 'sales_flat_order_item.order_id
-                        WHERE address_type = "' . $addresstype . '" 
+                        WHERE ' . $prefix . 'sales_flat_order_address.country_id = "GB" AND address_type = "' . $addresstype . '" 
                         AND REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(LEFT(postcode,3)),"0",""),"1",""),"2",""),"3",""),"4",""),"5",""),"6",""),"7",""),"8",""),"9","") = UPPER("' . $postcodeprefix . '") 
                         ' . $extendedsql1 . '
                         AND ' . $prefix . 'sales_flat_order_item.created_at BETWEEN "' . $fromdate . '" AND "' . $todate . '"
@@ -58,7 +58,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
                 FROM ' . $prefix . 'sales_flat_order_address
                 LEFT JOIN ' . $prefix . 'sales_flat_order ON ' . $prefix . 'sales_flat_order_address.parent_id = ' . $prefix . 'sales_flat_order.entity_id
                 RIGHT JOIN ' . $prefix . 'sales_flat_order_item ON ' . $prefix . 'sales_flat_order.entity_id = ' . $prefix . 'sales_flat_order_item.order_id
-                WHERE address_type = "' . $addresstype . '"
+                WHERE ' . $prefix . 'sales_flat_order_address.country_id = "GB" AND address_type = "' . $addresstype . '"
                 ' . $extendedsql1 . $extendedsql2 . $extendedsql5 . '
                 AND ' . $prefix . 'sales_flat_order.created_at BETWEEN "' . $fromdate . '" AND "' . $todate . '" 
                 GROUP BY UPPER(pc)';
@@ -73,7 +73,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
                         ROUND(SUM(' . $prefix . 'sales_flat_order_item.qty_ordered),0) AS label_bb
                         FROM ' . $prefix . 'sales_flat_order_address
                         LEFT JOIN ' . $prefix . 'sales_flat_order_item ON ' . $prefix . 'sales_flat_order_address.parent_id = ' . $prefix . 'sales_flat_order_item.order_id
-                        WHERE address_type = "' . $addresstype . '" 
+                        WHERE ' . $prefix . 'sales_flat_order_address.country_id = "GB" AND address_type = "' . $addresstype . '" 
                         AND REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(LEFT(postcode,3)),"0",""),"1",""),"2",""),"3",""),"4",""),"5",""),"6",""),"7",""),"8",""),"9","") = UPPER("' . $postcodeprefix . '") 
                         ' . $extendedsql1 . '
                         AND ' . $prefix . 'sales_flat_order_item.created_at BETWEEN "' . $fromdate . '" AND "' . $todate . '"
@@ -91,7 +91,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
                     FROM ' . $prefix . 'sales_flat_order_address
                     LEFT JOIN ' . $prefix . 'sales_flat_order ON ' . $prefix . 'sales_flat_order_address.parent_id = ' . $prefix . 'sales_flat_order.entity_id
                     RIGHT JOIN ' . $prefix . 'sales_flat_order_item ON ' . $prefix . 'sales_flat_order.entity_id = ' . $prefix . 'sales_flat_order_item.order_id
-                    WHERE address_type = "' . $addresstype . '"
+                    WHERE ' . $prefix . 'sales_flat_order_address.country_id = "GB" AND address_type = "' . $addresstype . '"
                     ' . $extendedsql1 . $extendedsql2 . $extendedsql5 . '
                     AND ' . $prefix . 'sales_flat_order.created_at BETWEEN "' . $fromdate . '" AND "' . $todate . '"
                     GROUP BY pc
@@ -108,7 +108,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
                         ROUND(SUM(' . $prefix . 'sales_flat_order_item.row_total_incl_tax),2) AS label_bb
                         FROM ' . $prefix . 'sales_flat_order_address
                         LEFT JOIN ' . $prefix . 'sales_flat_order_item ON ' . $prefix . 'sales_flat_order_address.parent_id = ' . $prefix . 'sales_flat_order_item.order_id
-                        WHERE address_type = "' . $addresstype . '"
+                        WHERE ' . $prefix . 'sales_flat_order_address.country_id = "GB" AND address_type = "' . $addresstype . '"
                         AND REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(LEFT(postcode,3)),"0",""),"1",""),"2",""),"3",""),"4",""),"5",""),"6",""),"7",""),"8",""),"9","") = UPPER("' . $postcodeprefix . '") 
                         ' . $extendedsql1 . '
                         AND ' . $prefix . 'sales_flat_order_item.created_at BETWEEN "' . $fromdate . '" AND "' . $todate . '" 
@@ -127,7 +127,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
                         LEFT JOIN ' . $prefix . 'sales_flat_order ON ' . $prefix . 'sales_flat_order_address.parent_id = ' . $prefix . 'sales_flat_order.entity_id
                         LEFT JOIN ' . $prefix . 'sales_flat_creditmemo ON ' . $prefix . 'sales_flat_order.entity_id = ' . $prefix . 'sales_flat_creditmemo.order_id
                         LEFT JOIN ' . $prefix . 'sales_flat_creditmemo_item ON ' . $prefix . 'sales_flat_creditmemo.entity_id = ' . $prefix . 'sales_flat_creditmemo_item.parent_id
-                        WHERE address_type = "' . $addresstype . '" 
+                        WHERE ' . $prefix . 'sales_flat_order_address.country_id = "GB" AND address_type = "' . $addresstype . '" 
                         ' . $extendedsql3 . $extendedsql5 . '
                         AND ' . $prefix . 'sales_flat_creditmemo.created_at BETWEEN "' . $fromdate . '" AND "' . $todate . '" 
                         GROUP BY UPPER(pc)
@@ -146,7 +146,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
                         FROM ' . $prefix . 'sales_flat_order_address 
                         LEFT JOIN ' . $prefix . 'sales_flat_creditmemo ON ' . $prefix . 'sales_flat_order_address.parent_id = ' . $prefix . 'sales_flat_creditmemo.order_id 
                         LEFT JOIN ' . $prefix . 'sales_flat_creditmemo_item ON ' . $prefix . 'sales_flat_creditmemo.entity_id = ' . $prefix . 'sales_flat_creditmemo_item.parent_id 
-                        WHERE address_type = "' . $addresstype . '" 
+                        WHERE ' . $prefix . 'sales_flat_order_address.country_id = "GB" AND address_type = "' . $addresstype . '" 
                         AND REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(LEFT(postcode,3)),"0",""),"1",""),"2",""),"3",""),"4",""),"5",""),"6",""),"7",""),"8",""),"9","") = UPPER("' . $postcodeprefix . '") 
                         ' . $extendedsql3 . '
                         AND ' . $prefix . 'sales_flat_creditmemo.created_at BETWEEN "' . $fromdate . '" AND "' . $todate . '" 
@@ -196,7 +196,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
                           FROM ' . $prefix . 'sales_flat_order_address
                           LEFT JOIN ' . $prefix . 'sales_flat_order_item ON ' . $prefix . 'sales_flat_order_address.parent_id = ' . $prefix . 'sales_flat_order_item.order_id
                           LEFT JOIN ' . $prefix . 'sales_flat_order ON ' . $prefix . 'sales_flat_order_address.parent_id = ' . $prefix . 'sales_flat_order.entity_id
-                          WHERE address_type = "' . $addresstype . '"
+                          WHERE ' . $prefix . 'sales_flat_order_address.country_id = "GB" AND address_type = "' . $addresstype . '"
                           ' . $extendedsql1 . $extendedsql2 . $extendedsql5 . '
                           AND ' . $prefix . 'sales_flat_order.created_at BETWEEN "' . $fromdate . '" AND "' . $todate . '" 
                           GROUP BY UPPER(pc)
@@ -212,7 +212,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
                         ROUND(SUM(' . $prefix . 'sales_flat_order_item.qty_ordered),0) AS label_bb
                         FROM ' . $prefix . 'sales_flat_order_address
                         LEFT JOIN ' . $prefix . 'sales_flat_order_item ON ' . $prefix . 'sales_flat_order_address.parent_id = ' . $prefix . 'sales_flat_order_item.order_id
-                        WHERE address_type = "' . $addresstype . '"
+                        WHERE ' . $prefix . 'sales_flat_order_address.country_id = "GB" AND address_type = "' . $addresstype . '"
                         AND REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(LEFT(postcode,3)),"0",""),"1",""),"2",""),"3",""),"4",""),"5",""),"6",""),"7",""),"8",""),"9","") = UPPER("' . $postcodeprefix . '") 
                         ' . $extendedsql1 . '
                         AND ' . $prefix . 'sales_flat_order_item.created_at BETWEEN "' . $fromdate . '" AND "' . $todate . '" 
