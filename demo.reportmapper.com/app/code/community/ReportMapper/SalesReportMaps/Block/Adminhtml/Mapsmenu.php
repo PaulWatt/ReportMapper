@@ -93,7 +93,6 @@ class ReportMapper_SalesReportMaps_Block_Adminhtml_Mapsmenu
               'name'      => 'store_ids',
               'title'     => Mage::helper('cms')->__('Store View'),
               'required'  => true,
-              'style' => 'width:210px;margin-left:0px;',
               'values'    => $dropdown_vals,
               'value'   => $selectedStores,
               'tabindex' => 1
@@ -111,11 +110,10 @@ class ReportMapper_SalesReportMaps_Block_Adminhtml_Mapsmenu
       $maptype = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper')->getMapType();
       
       $dropdown_vals = array(
-              
               '-1' => 'Select Report Type',
               'orders' => 'Sales Orders',
               'units' => 'Units Sold',
-              'values' => 'Total Values',
+              'totalvalues' => 'Total Values',
               'refunds' => 'Refunds',
               'customers' => 'Customers',
               'deliverycost' => 'Delivery Cost'
@@ -135,7 +133,6 @@ class ReportMapper_SalesReportMaps_Block_Adminhtml_Mapsmenu
           'values' => $dropdown_vals,
           'disabled' => false,
           'readonly' => false,
-          'style' => 'width:210px;margin-left:0px;',
           'tabindex' => 2
       ));
 
@@ -184,7 +181,6 @@ class ReportMapper_SalesReportMaps_Block_Adminhtml_Mapsmenu
           array_splice($productlist,$psku[4]+1,10000);
       }
 
-
       $selectedproducts = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper')->getSelectedProducts();
       $fieldset->addField('products', 'multiselect',
           array(
@@ -193,27 +189,24 @@ class ReportMapper_SalesReportMaps_Block_Adminhtml_Mapsmenu
               'value'  => $selectedproducts,
               'values' => $productlist,
               'name' => 'products[]',
-              'style' => 'width:210px;height:200px;margin-left:0px;',
               'after_element_html' => '',
               'tabindex' => 7
           ));
-      
-      
+
       $rulelist = array();
       $rulelist[] = array(
           'value' => '*', 'label' => Mage::helper('sales')->__('No Promo Filter')
       );
-      
-      
+
       $rulesCollection = Mage::getModel('salesrule/rule')->getCollection()
       ->setOrder('name', 'asc');
-      
-      
+
       foreach ($rulesCollection as $rule) {
           $rulelist[] = array(
               'value' => $rule->getCode(), 'label' => $rule->getName()
           );
       }
+
       $SelectedCouponRuleCodes = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper')->getSelectedCouponRuleCodes();
       $fieldset->addField('coupon_rule_name', 'multiselect',
           array(
@@ -222,7 +215,6 @@ class ReportMapper_SalesReportMaps_Block_Adminhtml_Mapsmenu
               'value' => $SelectedCouponRuleCodes,
               'values' => $rulelist,
               'name' => 'coupon_rule_name[]',
-              'style' => 'width:210px;height:200px;margin:0px;',
               'after_element_html' => '',
               'tabindex' => 8
       
@@ -233,19 +225,17 @@ class ReportMapper_SalesReportMaps_Block_Adminhtml_Mapsmenu
           'required'  => false,
           'name'      => 'map_colour',
           'after_element_html' => 'Strength Colour',
-          'style' => 'width:110px;',
           'value'  => $this->getMapColour(),
           'tabindex' => 9
       ));
-      
+
       $fieldset->addField('highlight_colour', 'text', array(
           'class'  => 'color {hash:true,required:false}',
           'required'  => false,
           'name'      => 'highlight_colour',
           'after_element_html' => 'Highlight Colour<br><br><span>Clear colour fields to reset to default.</span><br>',
-          'style' => 'width:110px;',
           'value'  => $this->getHighlightColour(),
-          'tabindex' => 9
+          'tabindex' => 10
       ));
 
       $fieldset->addField('submit', 'submit', array(

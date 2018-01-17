@@ -18,7 +18,6 @@ class ReportMapper_SalesReportMaps_Model_Observer
     public function controllerActionPredispatch($observer)
     {
         if (Mage::getSingleton('admin/session')->isLoggedIn()) {
-            /** @var $model ReportMapper_SalesReportMaps_Model_Feed */
             $model = Mage::getModel('reportmapper_salesreportmaps/feed');
             $model->checkUpdate();
         }

@@ -16,8 +16,7 @@
 class ReportMapper_SalesReportMaps_Helper_Data
     extends Mage_Core_Helper_Abstract
 {
-public function getExtensionVersion()
-{
+public function getExtensionVersion(){
     return (string) Mage::getConfig()->getNode()->modules->ReportMapper_SalesReportMaps->version;
 }
 }

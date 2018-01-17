@@ -9,65 +9,84 @@
  * @copyright	Copyright (c) 2018 ReportMapper.com
  * @license	http://opensource.org/licenses/osl-3.0.php  Open Software License
  */
-	body {
-    -webkit-print-color-adjust: exact;
-	}
-	div.label_pc {
+body {
+	-webkit-print-color-adjust: exact;
+}
+
+div.label_pc {
 	background-color: white !important;
-	}
-	div.row_area {
-	    text-align: center !important;
-	}
-	div.side-col {
-	    display: none;
-	}
-	div.main-col {
-	    margin-left: 0px;
-	    padding: 0 0 25px 25px;
-	}
-	svg {
-		float:left;
-		width: 98% !important;
-		height: 1200px !important;
-		margin-top: 50px !important;
-		margin-bottom: 100px !important;
-	}
-	div.page-break	{ 
-		float:left;
-		clear:both;
-		display: block; 
-		page-break-after: always !important;
-		page-break-inside: avoid;
-	}
-	.map_form_button {
-		display: none;
-	}
+}
+
+div.row_area {
+	text-align: center !important;
+}
+
+div.side-col {
+	display: none;
+}
+
+div.main-col {
+	margin-left: 0px;
+	padding: 0 0 25px 25px;
+}
+
+svg {
+	float:left;
+	width: 98% !important;
+	height: 1200px !important;
+	margin-top: 50px !important;
+	margin-bottom: 100px !important;
+}
+
+div.page-break	{
+	float:left;
+	clear:both;
+	display: block;
+	page-break-after: always !important;
+	page-break-inside: avoid;
+}
+
+.map_form_button {
+	display: none;
+}
+
 h1.print_only{
 	margin: 20px 0px 50px 0px;
 	display:block;
 	float:left;
 }
-  .page-break { page-break-inside: avoid; page-break-after: always; margin-top:10px !important;}
-  .dont-print { display: none; }
 
-	.rm_licence_validation{
-		float:left;
-		clear:both;
-		z-index: 99999;
-		width:100%;
-	}
-	p.rm_footer{
-		float:left;
-		clear:both;
-		z-index: 99999;
-	}
-	.postcode_outer_div {
+.page-break {
+	page-break-inside: avoid;
+	page-break-after: always;
+	margin-top:10px !important;
+}
+
+.dont-print {
+	display: none;
+}
+
+.rm_licence_validation{
+	float:left;
+	clear:both;
+	z-index: 99999;
+	width:100%;
+}
+
+p.rm_footer{
+	float:left;
+	clear:both;
+	z-index: 99999;
+}
+
+.postcode_outer_div {
 	z-index: 99999;
 	position:relative;
 	background-color: white !important;
 	margin: 0;
 	padding; 0;
-	}
-	.clearfix:before, .clearfix:after{  
-    display: block!important;
+}
+
+.clearfix:before, .clearfix:after{
+	display: block!important;
 }
