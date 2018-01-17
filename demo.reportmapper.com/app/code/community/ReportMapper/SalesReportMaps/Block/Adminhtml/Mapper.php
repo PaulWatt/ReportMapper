@@ -18,8 +18,8 @@ class ReportMapper_SalesReportMaps_Block_Adminhtml_Mapper
 {
 function __construct()
 {
-    $this->pths = $this->getPths('UK');
-    $this->pcds = $this->getPcds('UK');
+    $this->paths = $this->getMapPaths('UK');
+    $this->areas = $this->getAreas('UK');
 }
 public function getStoreNames(){
 $selectedstoreids = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper')->getStoreIds();
@@ -37,7 +37,7 @@ return $store_name;
 
 }
 
-public function getPths($pathmap){
+public function getMapPaths($pathmap){
     $access_key = Mage::getStoreConfig('user_data/authorisation/access_key');
     $options = array(CURLOPT_HEADER =>false,'location' => 'http://www.reportmapper.com/validate_rm.php',
         'uri' => 'http://www.reportmapper.com');
@@ -47,7 +47,7 @@ public function getPths($pathmap){
     return $pts;
 }
 
-public function getPcds($pathmap){
+public function getAreas($pathmap){
     $access_key = Mage::getStoreConfig('user_data/authorisation/access_key');
     $options = array(CURLOPT_HEADER =>false,'location' => 'http://www.reportmapper.com/validate_rm.php',
         'uri' => 'http://www.reportmapper.com');
@@ -100,7 +100,7 @@ public function mergePathsTodata($array1,$array2){
     return $array1;
 }
 
-public function mergePcdsTodata($array1,$array2){
+public function mergeAreasTodata($array1,$array2){
     $i=0;
     foreach ($array1 as $val){
         foreach ($val as $key1 => $val1){
@@ -135,7 +135,7 @@ public function mergePcdsTodata($array1,$array2){
     return $array1;
 }
 
-public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$extendedsql1,$extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$postcodeprefix,$pathmap)
+public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$extendedsql1,$extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$pathmap)
     {
     global $label_h1,$label_aa_header,$label_bb_header,$row_aa_header,$row_bb_header,$h1,$currencyA,$currencyB;
         $SQLModel = Mage::getModel('reportmapper_salesreportmaps/adminhtml_sqls');
@@ -145,8 +145,8 @@ public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$ex
             //Orders
             case ($maptype == "orders"):
                  
-                $DataSQL = $SQLModel->getOrders($prefix,$fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$postcodeprefix,$pathmap);
-                $LabelsSQL = $SQLModel->getLabelItems_OrdersSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$postcodeprefix,$pathmap);
+                $DataSQL = $SQLModel->getOrders($prefix,$fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
+                $LabelsSQL = $SQLModel->getLabelItems_OrdersSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
                 $row_aa_header = "Orders";
                 $row_bb_header = "Units";
                 $h1 = "Orders Report";
@@ -158,8 +158,8 @@ public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$ex
                 //Units
             case ($maptype == "units"):
     
-                $DataSQL = $SQLModel->getUnits($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$postcodeprefix,$pathmap);
-                $LabelsSQL = $SQLModel->getLabelItems_UnitsSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$postcodeprefix,$pathmap);
+                $DataSQL = $SQLModel->getUnits($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
+                $LabelsSQL = $SQLModel->getLabelItems_UnitsSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
                 $row_aa_header = "Units";
                 $row_bb_header = "Orders";
                 $h1 = "Units Sold Report";
@@ -171,8 +171,8 @@ public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$ex
                 //Values
             case ($maptype == "totalvalues"):
     
-                $DataSQL = $SQLModel->getTotalValues($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$postcodeprefix,$pathmap);
-                $LabelsSQL = $SQLModel->getLabelItems_TotalValuesSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$postcodeprefix,$pathmap);
+                $DataSQL = $SQLModel->getTotalValues($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
+                $LabelsSQL = $SQLModel->getLabelItems_TotalValuesSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
                 $row_aa_header = "Tot Val";
                 $row_bb_header = "Avg Val";
                 $h1 = "Total Sales Values Report";
@@ -186,52 +186,52 @@ public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$ex
                 //Refunds
             case ($maptype == "refunds"):
                  
-                $DataSQL = $SQLModel->getRefunds($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$postcodeprefix,$pathmap);
-                $LabelsSQL = $SQLModel->getLabelItems_RefundsSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$postcodeprefix,$pathmap);
+                $DataSQL = $SQLModel->getRefunds($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
+                $LabelsSQL = $SQLModel->getLabelItems_RefundsSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
                 $row_aa_header = "Qty";
                 $row_bb_header = "Value";
                 $h1 = "Refunds Report";
                 $label_aa_header = "Products";
                 $label_bb_header = "Value";
                 $label_h1 = "Refunds";
-                //$currencyA = Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol();
+                $currencyA = Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol();
                 $currencyB = Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol();
                 break;
                  
                 //Customers
             case ($maptype == "customers"):
     
-                $DataSQL = $SQLModel->getCustomers($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$postcodeprefix,$pathmap);
-                $LabelsSQL = $SQLModel->getLabelItems_CustomersSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$postcodeprefix,$pathmap);
+                $DataSQL = $SQLModel->getCustomers($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
+                $LabelsSQL = $SQLModel->getLabelItems_CustomersSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
                 $row_aa_header = "No Of";
                 $row_bb_header = "Spend";
                 $h1 = "Customers Report";
                 $label_aa_header = "Products";
                 $label_bb_header = "Qtys";
                 $label_h1 = "Customers";
-                //$currencyA = Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol();
+                $currencyA = NULL;
                 $currencyB = Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol();
                 break;
                  
                 //Delivery Costs
             case ($maptype == "deliverycost"):
                  
-                $DataSQL = $SQLModel->getDeliverycosts($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$postcodeprefix,$pathmap);
-                $LabelsSQL = $SQLModel->getLabelItems_DeliverycostsSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$postcodeprefix,$pathmap);
+                $DataSQL = $SQLModel->getDeliverycosts($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
+                $LabelsSQL = $SQLModel->getLabelItems_DeliverycostsSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
                 $row_aa_header = "Qty";
                 $row_bb_header = "Value";
                 $h1 = "Delivery Costs Report";
                 $label_aa_header = "Products";
                 $label_bb_header = "Qtys";
                 $label_h1 = "Deliverys";
-                //$currencyA = Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol();
+                $currencyA = NULL;
                 $currencyB = Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol();
                 break;
 
-                //default
+                //Default
             case ($maptype == "-1"):
-                $DataSQL = $SQLModel->getOrders($prefix,"", "", $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$postcodeprefix,$pathmap);
-                $LabelsSQL = $SQLModel->getLabelItems_OrdersSQL($prefix,"","", $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$postcodeprefix,$pathmap);
+                $DataSQL = $SQLModel->getOrders($prefix,"", "", $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
+                $LabelsSQL = $SQLModel->getLabelItems_OrdersSQL($prefix,"","", $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
                 $row_aa_header = "Orders";
                 $row_bb_header = "Units";
                 $h1 = "Orders Report";
@@ -259,8 +259,6 @@ public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$ex
 }
 
 public function getMaxValue($results) {
-  $total_result_count = count($results);
-  $position = 0;
     usort($results, function($max_a, $max_b) {
         return $max_b['aa'] - $max_a['aa'];
     });
@@ -325,6 +323,11 @@ public function getHighlightColour(){
         case ($maptype == "deliverycost"):
             $defaultHighlightColour = "#CCCCCC";
             break;
+
+        //Default
+        case ($maptype == "-1"):
+            $defaultHighlightColour = "";
+            break;
     }
 
     $LastMapType = Mage::getSingleton('core/session')->getMapType();
@@ -369,6 +372,11 @@ public function getMapColour(){
             //Delivery Costs
         case ($maptype == "deliverycost"):
             $defaultMapColour = "#000000";
+            break;
+
+        //Default
+        case ($maptype == "-1"):
+            $defaultMapColour = "";
             break;
 
     }
@@ -423,7 +431,6 @@ public function getMapData() {
     global $row_aa_header,$row_bb_header,$h1;
     
     $read = Mage::getSingleton('core/resource')->getConnection('core_read');
-    $write = Mage::getSingleton('core/resource')->getConnection('core_write');
     $prefix = Mage::getConfig()->getTablePrefix();
     $fromdate = $this->getFromDate();
     $todate = $this->getToDate();
@@ -431,7 +438,7 @@ public function getMapData() {
     $maptype = $this->getMapType();
     $extendedsql1 = '';
     $extendedsql2 = '';
-    $postcodeprefix = '';
+    $areacodeprefix = '';
     $pathmap = 'UK';
     
     $productsreq = $this->getSelectedProducts();
@@ -456,7 +463,7 @@ public function getMapData() {
         $extendedsql5 = "AND ".$prefix."sales_flat_order.coupon_code IN ('".$coupon_rule_codes_imploded."')";
     }
     
-    $DataSQL = $this->getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$extendedsql1,$extendedsql2,$extendedsq13,$extendedsql4,$extendedsql5,$postcodeprefix,$pathmap);
+    $DataSQL = $this->getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$extendedsql1,$extendedsql2,$extendedsq13,$extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
     $row_aa_header = $DataSQL['row_aa_header'];
     $row_bb_header = $DataSQL['row_bb_header'];
     $h1 = $DataSQL['h1'];
@@ -522,25 +529,22 @@ public function getAllOrdersCount($fromDate,$toDate){
     $collection->addAttributeToFilter('created_at', array('gteq' =>date("Y-m-d",$fromDate)));
     $collection->addAttributeToFilter('created_at', array('lteq' => date("Y-m-d",$toDate)));
     
-   return $collection->count();//$collection->setOrder('qty_ordered', 'DESC')->getFirstItem();
+   return $collection->count();
 }
 
 public function getSelectedAllOrdersRelative(){
     $AllOrdersRelative = $this->getRequest()->getParam('all_orders_relative',array(''));
-
     if(empty($AllOrdersRelative)){
         return "1";
     } else{
         return "0";
     }
-
 }
 
 public function getSVG() {
     global $h1, $reqfromdate,$reqtodate,$allOrdersCount,$rm_footer;
     $allOrdersCount = $this->getAllOrdersCount($reqfromdate,$reqtodate);
     $maptype = $this->getMapType();
-    $ukmaplabels = $this->getMapLabeling();
     $store_names = $this->getStoreNames();
     $product_names = $this->getSelectedProductNames($this->getSelectedProducts());
     $ruleIds = $this->getSelectedCouponRuleCodes();
@@ -552,7 +556,6 @@ public function getSVG() {
     $rm_footer = "Stores: $store_names | Products: $product_names | Promotion: $ruleNames";
     $svg_data_array = array(
         "svg_header" => $rm_header,
-        "svg_labels"    => $ukmaplabels,
         "svg_footer"    => $rm_footer
     );
     if($this->getValid()){
@@ -560,7 +563,7 @@ public function getSVG() {
     }
 }
 
-public function getLabelItems($postcodeprefix) {
+public function getLabelItems($areacodeprefix) {
     global $label_aa_header,$label_bb_header,$label_h1;
 
     $read = Mage::getSingleton('core/resource')->getConnection('core_read');
@@ -593,7 +596,7 @@ public function getLabelItems($postcodeprefix) {
         $extendedsql5 = "AND ".$prefix."sales_flat_order.coupon_code IN ('".$coupon_rule_codes_imploded."')";
     }
     
-    $DataSQL = $this->getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$extendedsql1,$extendedsql2,$extendedsq13,$extendedsql4,$extendedsql5,$postcodeprefix,$pathmap);
+    $DataSQL = $this->getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$extendedsql1,$extendedsql2,$extendedsq13,$extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
     $label_aa_header = $DataSQL['label_aa_header'];
     $label_bb_header = $DataSQL['label_bb_header'];
     $label_h1 = $DataSQL['label_h1'];
@@ -602,10 +605,10 @@ public function getLabelItems($postcodeprefix) {
 }
 
 public function getTables() {
-    global $row_aa_header,$row_bb_header,$currencyA, $currencyB, $allOrdersCount,$rm_footer;
+    global $row_aa_header,$row_bb_header,$currencyA, $currencyB, $allOrdersCount;
     $results = $this->getMapData();
-    $areas = $this->pcds;
-    $results = $this->mergePcdsTodata($areas ,$results);
+    $areas = $this->areas;
+    $results = $this->mergeAreasTodata($areas ,$results);
     $max_aa = $this->getMaxValue($results);
     $AllOrdersRelative = $this->getSelectedAllOrdersRelative();
     if($AllOrdersRelative == 1){
@@ -622,8 +625,7 @@ public function getTables() {
         "table_row_bb_header" => $row_bb_header,
         "table_currencyA" => $currencyA,
         "table_currencyB" => $currencyB,
-        "table_allOrdersCount" => $allOrdersCount,
-        "table_rm_footer" => $rm_footer
+        "table_allOrdersCount" => $allOrdersCount
     );
 
 $maptype = $this->getMapType();
@@ -634,39 +636,35 @@ Mage::getSingleton('core/session')->setMapType($maptype);
     }
 }
 
-public function getPaths()
-        {
-            global $allOrdersCount;
-            $map_colour = $this->getMapColour();
-            $highlight_colour = $this->getHighlightColour();
-            $results = $this->getMapData();
-            $pths = $this->pths;
-            $results = $this->mergePathsTodata($pths ,$results);
-            $max_aa = $this->getMaxValue($results);
-            $AllOrdersRelative = $this->getSelectedAllOrdersRelative();
-            if($AllOrdersRelative == 1){
-                $max_aa = $allOrdersCount;
-            }
-            $path_data = array(
-                "path_results" => $results,
-                "path_postcode" => $postcode,
-                "path_max_aa" => $max_aa,
-                "path_map_colour" => $map_colour,
-                "path_highlight_colour" => $highlight_colour
+public function getPaths() {
+    global $allOrdersCount;
+    $map_colour = $this->getMapColour();
+    $highlight_colour = $this->getHighlightColour();
+    $results = $this->getMapData();
+    $paths = $this->paths;
+    $results = $this->mergePathsTodata($paths ,$results);
+    $max_aa = $this->getMaxValue($results);
+    $AllOrdersRelative = $this->getSelectedAllOrdersRelative();
+    if($AllOrdersRelative == 1){
+        $max_aa = $allOrdersCount;
+    }
+    $path_data = array(
+        "path_results" => $results,
+        "path_max_aa" => $max_aa,
+        "path_map_colour" => $map_colour,
+        "path_highlight_colour" => $highlight_colour
 
-            );
-             return $path_data;
-        }
+    );
+     return $path_data;
+}
 
 public function getMapLabeling(){
     $map_lables = $this->getTxtPths();
     return $map_lables;
 }
 
-public function getLabels()
-        {
+public function getLabels() {
     global $label_aa_header, $label_bb_header, $label_h1,$currencyA,$currencyB;
-
     $results = $this->getMapData();
     $label_data = array(
         "label_results" => $results,
@@ -680,74 +678,72 @@ public function getLabels()
 }
 
 public function getOpaqueness($aa,$max) {
-    
-        
-        $percentage= round(($aa / $max) * 100,2);
-        switch ($percentage) {
-            case ($percentage < "0.001"):
+    $percentage= round(($aa / $max) * 100,2);
+    switch ($percentage) {
+        case ($percentage < "0.001"):
 
-                $opacity = 0.25;
-                $opacitycss = 0.75;
-                break;
-            case ($percentage < "10"):
+            $opacity = 0.25;
+            $opacitycss = 0.75;
+            break;
+        case ($percentage < "10"):
 
-                $opacity = 0.3;
-                $opacitycss = 0.7;
-                break;
-            case ($percentage < "20"):
+            $opacity = 0.3;
+            $opacitycss = 0.7;
+            break;
+        case ($percentage < "20"):
 
-                $opacity = 0.35;
-                $opacitycss = 0.65;
-                break;
-            case ($percentage < "30"):
+            $opacity = 0.35;
+            $opacitycss = 0.65;
+            break;
+        case ($percentage < "30"):
 
-                $opacity = 0.4;
-                $opacitycss = 0.6;
-                break;
-            case ($percentage < "40"):
+            $opacity = 0.4;
+            $opacitycss = 0.6;
+            break;
+        case ($percentage < "40"):
 
-                $opacity = 0.5;
-                $opacitycss = 0.5;
-                break;
-            case ($percentage < "50"):
+            $opacity = 0.5;
+            $opacitycss = 0.5;
+            break;
+        case ($percentage < "50"):
 
-                $opacity = 0.6;
-                $opacitycss = 0.4;
-                break;
-            case ($percentage < "70"):
+            $opacity = 0.6;
+            $opacitycss = 0.4;
+            break;
+        case ($percentage < "70"):
 
-                $opacity = 0.7;
-                $opacitycss = 0.3;
-                break;
-            case ($percentage < "80"):
+            $opacity = 0.7;
+            $opacitycss = 0.3;
+            break;
+        case ($percentage < "80"):
 
-                $opacity = 0.8;
-                $opacitycss = 0.2;
-                break;
-            case ($percentage < "90"):
+            $opacity = 0.8;
+            $opacitycss = 0.2;
+            break;
+        case ($percentage < "90"):
 
-                $opacity = 0.9;
-                $opacitycss = 0.1;
-                break;
-            case ($percentage < "100.01"):
+            $opacity = 0.9;
+            $opacitycss = 0.1;
+            break;
+        case ($percentage < "100.01"):
 
-                $opacity = 1;
-                $opacitycss = 0;
-                break;
-        }
-        
-         if((!isset($aa)) OR (is_null($aa)) OR ($aa ==0)){
-            $opacity = 0;
-            $opacitycss = 1;
-            $aa = 0;
-        }
-        
-        $colours_array=array(
-            'opacity'=>$opacity,
-            'opacitycss'=>$opacitycss,
-            'aa'=>$aa
-        );
-        return $colours_array;
+            $opacity = 1;
+            $opacitycss = 0;
+            break;
+    }
+
+    if((!isset($aa)) OR (is_null($aa)) OR ($aa ==0)){
+        $opacity = 0;
+        $opacitycss = 1;
+        $aa = 0;
+    }
+
+    $colours_array=array(
+        'opacity'=>$opacity,
+        'opacitycss'=>$opacitycss,
+        'aa'=>$aa
+    );
+    return $colours_array;
         
 }
 

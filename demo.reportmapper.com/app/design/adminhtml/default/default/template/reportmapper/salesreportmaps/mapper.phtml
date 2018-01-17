@@ -24,13 +24,13 @@
         foreach($path_data['path_results'] as $r)
         {
             $path = $r['path'];
-            $postcode = strtoupper($r['postcode']);
+            $areacode = strtoupper($r['postcode']);
             $aa = $r['aa'];
             $colour_results = $this->getOpaqueness($aa,$path_data['path_max_aa']);
             $opacity=$colour_results['opacity'];
             ?>
                 <path d="<?php echo $path; ?>" fill="#FFF"/>
-                <path d="<?php echo $path; ?>" id="<?php echo $postcode; ?>" fill="<?php echo $path_data['path_map_colour'] ?>" fill-opacity="<?php echo $opacity; ?>" stroke="#000000" stroke-width="20" stroke-opacity="1" fill-rule="evenodd" name_kml="<?php echo $postcode; ?>" onmouseover="show(evt, 'label_<?php echo $postcode; ?>','<?php echo $path_data['path_highlight_colour'] ?>')" onmouseout="hide(evt, 'label_<?php echo $postcode; ?>','<?php echo $path_data['path_map_colour'] ?>')"/>
+                <path d="<?php echo $path; ?>" id="<?php echo $areacode; ?>" fill="<?php echo $path_data['path_map_colour'] ?>" fill-opacity="<?php echo $opacity; ?>" stroke="#000000" stroke-width="20" stroke-opacity="1" fill-rule="evenodd" name_kml="<?php echo $areacode; ?>" onmouseover="show(evt, 'label_<?php echo $areacode; ?>','<?php echo $path_data['path_highlight_colour'] ?>')" onmouseout="hide(evt, 'label_<?php echo $areacode; ?>','<?php echo $path_data['path_map_colour'] ?>')"/>
             <?php
         }
         ?>
@@ -89,7 +89,7 @@
             }else{
                 $rowcolour = "row_div_even";
             }
-            $postcode = strtoupper($r['postcode']);
+            $areacode = strtoupper($r['postcode']);
             $aa = $r['aa'];
             $bb = round($r['bb'],2);
             if($aa ==0){
@@ -99,9 +99,9 @@
             $opacitycss=$colour_results['opacitycss'];
             $aa=$colour_results['aa'];
             ?>
-        <div class="<?php echo $rowcolour; ?>" id="divrow_<?php echo $postcode; ?>" onmouseover="ChangeBackgroundColor(this,'<?php echo $table_data['table_highlight_colour']; ?>')" onmouseout="RestoreBackgroundColor(this,'<?php echo $table_data['table_map_colour']; ?>','<?php echo $rowcolour; ?>')">
+        <div class="<?php echo $rowcolour; ?>" id="divrow_<?php echo $areacode; ?>" onmouseover="ChangeBackgroundColor(this,'<?php echo $table_data['table_highlight_colour']; ?>')" onmouseout="RestoreBackgroundColor(this,'<?php echo $table_data['table_map_colour']; ?>','<?php echo $rowcolour; ?>')">
         <div class="bgcol" style="background-color:<?php echo $table_data['table_map_colour']; ?> !important;"><div style="opacity:<?php echo $opacitycss; ?>; background:white !important; width:50px; height:25px; margin:0px;"></div></div>
-        <div class="row_area"><?php echo $postcode; ?></div>
+        <div class="row_area"><?php echo $areacode; ?></div>
         <div class="row_a"><?php echo $table_data['table_currencyA'] ?><?php echo $aa; ?></div>
         <div class="row_b"><?php echo $table_data['table_currencyB'] ?><?php echo $bb; ?></div>
         </div>
