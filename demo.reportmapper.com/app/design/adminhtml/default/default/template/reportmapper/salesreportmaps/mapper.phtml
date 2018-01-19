@@ -6,36 +6,37 @@
  * @package	ReportMapper_SalesReportMaps
  * @version	1.0.0
  * @created	10th January 2018 3.00pm
- * @author		Paul Watt <support@reportmapper.com>
+ * @author	Paul Watt <support@reportmapper.com>
  * @purpose	ReportMapper block
  * @copyright	Copyright (c) 2018 ReportMapper.com
  * @license	http://opensource.org/licenses/osl-3.0.php  Open Software License
  */
-    $svg_data = $this->getSVG();
+
     $path_data = $this->getPaths();
     $label_data = $this->getLabels();
     $map_labels = $this->getMapLabeling();
     $table_data = $this->getTables();
+    $svg_data = $this->getSVG();
 ?>
 <h1><?php echo $svg_data['svg_header']; ?> <input value="Print Report" class="map_form_button submit required-entry" type="submit" onClick="window.print()"></h1>
-<svg id="svg-id" xmlns="http://www.w3.org/2000/svg" version="1.1" width="750" height="905" style="width: 750px; height: 905px; border:1px solid #ccc; background:lightblue; overflow: hidden;" transform="translate(0,0) scale(1.00)" viewBox="0 0 750 905" viewPort="0 0 750 905">
-    <g transform="translate(400,4235) scale(0.011)">
+<svg id="<?php echo $svg_data['svg_id']; ?>" xmlns="<?php echo $svg_data['svg_xmlns']; ?>" version="<?php echo $svg_data['svg_version']; ?>" width="<?php echo $svg_data['svg_width']; ?>" height="<?php echo $svg_data['svg_height']; ?>" transform="<?php echo $svg_data['svg_transform']; ?>" viewBox="<?php echo $svg_data['svg_viewbox']; ?>" viewPort="<?php echo $svg_data['svg_viewport']; ?>">
+    <g transform="<?php echo $svg_data['svg_g_transform']; ?>">
         <?php
-        foreach($path_data['path_results'] as $r)
+        foreach($path_data['path_results'] as $path_result)
         {
-            $path = $r['path'];
-            $areacode = strtoupper($r['postcode']);
-            $aa = $r['aa'];
+            $path = $path_result['path'];
+            $areacode = strtoupper($path_result['postcode']);
+            $aa = $path_result['aa'];
             $colour_results = $this->getOpaqueness($aa,$path_data['path_max_aa']);
             $opacity=$colour_results['opacity'];
             ?>
                 <path d="<?php echo $path; ?>" fill="#FFF"/>
-                <path d="<?php echo $path; ?>" id="<?php echo $areacode; ?>" fill="<?php echo $path_data['path_map_colour'] ?>" fill-opacity="<?php echo $opacity; ?>" stroke="#000000" stroke-width="20" stroke-opacity="1" fill-rule="evenodd" name_kml="<?php echo $areacode; ?>" onmouseover="show(evt, 'label_<?php echo $areacode; ?>','<?php echo $path_data['path_highlight_colour'] ?>')" onmouseout="hide(evt, 'label_<?php echo $areacode; ?>','<?php echo $path_data['path_map_colour'] ?>')"/>
+                <path d="<?php echo $path; ?>" id="<?php echo $areacode; ?>" fill="<?php echo $path_data['path_map_colour'] ?>" fill-opacity="<?php echo $opacity; ?>" stroke="#000000" stroke-width="<?php echo $path_result['stroke_width']; ?>" stroke-opacity="1" fill-rule="evenodd" name_kml="<?php echo $areacode; ?>" onmouseover="show(evt, 'label_<?php echo $areacode; ?>','<?php echo $path_data['path_highlight_colour'] ?>')" onmouseout="hide(evt, 'label_<?php echo $areacode; ?>','<?php echo $path_data['path_map_colour'] ?>')"/>
             <?php
         }
         ?>
     </g>
-    <g class="labels" transform="scale(1.094) translate(63,16) ">
+    <g class="labels" transform="<?php echo $svg_data['svg_g_labels_transform']; ?>">
         <?php
         foreach ($map_labels as $lable) {
             ?><text visibility="visible" class="<?php echo $lable['postcode']; ?>" transform="matrix(<?php echo $lable['text_path'];?>)" font-size="<?php echo $lable['text_size']?>"><?php echo $lable['postcode'];?></text>
@@ -45,7 +46,8 @@
     </g>
 </svg>
 <div class="clearfix"></div>
-<div class="page-break"> </div>
+<div class="page-break"></div>
+
 <?php
     foreach($label_data['label_results'] as $label_result)
     {
@@ -82,16 +84,16 @@
         <div class="row_b_header"><?php echo $table_data['table_row_bb_header']; ?></div>
         <?php
         $i = 0;
-        foreach($table_data['table_results'] as $r)
+        foreach($table_data['table_results'] as $table_result)
         {
             if (0 == $i % 2){
                 $rowcolour = "row_div_odd";
             }else{
                 $rowcolour = "row_div_even";
             }
-            $areacode = strtoupper($r['postcode']);
-            $aa = $r['aa'];
-            $bb = round($r['bb'],2);
+            $areacode = strtoupper($table_result['postcode']);
+            $aa = $table_result['aa'];
+            $bb = round($table_result['bb'],2);
             if($aa ==0){
                 $aa = null;
             }

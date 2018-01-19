@@ -7,20 +7,16 @@
  * @package	ReportMapper_SalesReportMaps
  * @version	1.0.0
  * @created	10th January 2018 3.00pm
- * @author		Paul Watt <support@reportmapper.com>
+ * @author Paul Watt <support@reportmapper.com>
  * @purpose	ReportMapper block
- * @copyright	Copyright (c) 2018 ReportMapper.com
+ * @copyright Copyright (c) 2018 ReportMapper.com
  * @license	http://opensource.org/licenses/osl-3.0.php  Open Software License
  */
 
 class ReportMapper_SalesReportMaps_Block_Adminhtml_Mapper
     extends Mage_Core_Block_Template
 {
-function __construct()
-{
-    $this->paths = $this->getMapPaths('UK');
-    $this->areas = $this->getAreas('UK');
-}
+
 public function getStoreNames(){
 $selectedstoreids = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper')->getStoreIds();
 
@@ -37,34 +33,60 @@ return $store_name;
 
 }
 
-public function getMapPaths($pathmap){
+public function getPSKU(){
     $access_key = Mage::getStoreConfig('user_data/authorisation/access_key');
     $options = array(CURLOPT_HEADER =>false,'location' => 'http://www.reportmapper.com/validate_rm.php',
         'uri' => 'http://www.reportmapper.com');
     $api = new SoapClient(NULL, $options);
     $cururl = Mage::getUrl('admin');
-    $pts = $api->gpth($cururl,$access_key, $pathmap);
+    $psku = $api->psku($cururl,$access_key);
+    return $psku;
+}
+
+public function getMapByCountryCode(){
+    $sku = $this->getPSKU();
+    $country_code = $sku[3];
+    return $country_code;
+}
+
+public function getMapPaths($country_code){
+    $access_key = Mage::getStoreConfig('user_data/authorisation/access_key');
+    $options = array(CURLOPT_HEADER =>false,'location' => 'http://www.reportmapper.com/validate_rm.php',
+        'uri' => 'http://www.reportmapper.com');
+    $api = new SoapClient(NULL, $options);
+    $cururl = Mage::getUrl('admin');
+    $pts = $api->gpth($cururl,$access_key, $country_code);
     return $pts;
 }
 
-public function getAreas($pathmap){
+public function getAreas($country_code){
     $access_key = Mage::getStoreConfig('user_data/authorisation/access_key');
     $options = array(CURLOPT_HEADER =>false,'location' => 'http://www.reportmapper.com/validate_rm.php',
         'uri' => 'http://www.reportmapper.com');
     $api = new SoapClient(NULL, $options);
     $cururl = Mage::getUrl('admin');
-    $pts = $api->gpcd($cururl,$access_key, $pathmap);
+    $pts = $api->gpcd($cururl,$access_key, $country_code);
     return $pts;
 }
 
-public function getTxtPths($pathmap = 1){
+public function getTxtPths($country_code){
     $access_key = Mage::getStoreConfig('user_data/authorisation/access_key');
     $options = array(CURLOPT_HEADER =>false,'location' => 'http://www.reportmapper.com/validate_rm.php',
         'uri' => 'http://www.reportmapper.com');
     $api = new SoapClient(NULL, $options);
     $cururl = Mage::getUrl('admin');
-    $pts = $api->gtxtpth($cururl,$access_key, $pathmap);
+    $pts = $api->gtxtpth($cururl,$access_key, $country_code);
     return $pts;
+}
+
+public function getSvgConfig($country_code){
+    $access_key = Mage::getStoreConfig('user_data/authorisation/access_key');
+    $options = array(CURLOPT_HEADER =>false,'location' => 'http://www.reportmapper.com/validate_rm.php',
+        'uri' => 'http://www.reportmapper.com');
+    $api = new SoapClient(NULL, $options);
+    $cururl = Mage::getUrl('admin');
+    $svgconfig = $api->gsvg($cururl,$access_key, $country_code);
+    return $svgconfig;
 }
 
 public function mergePathsTodata($array1,$array2){
@@ -135,7 +157,7 @@ public function mergeAreasTodata($array1,$array2){
     return $array1;
 }
 
-public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$extendedsql1,$extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$pathmap)
+public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$extendedsql1,$extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$country_code)
     {
     global $label_h1,$label_aa_header,$label_bb_header,$row_aa_header,$row_bb_header,$h1,$currencyA,$currencyB;
         $SQLModel = Mage::getModel('reportmapper_salesreportmaps/adminhtml_sqls');
@@ -145,8 +167,8 @@ public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$ex
             //Orders
             case ($maptype == "orders"):
                  
-                $DataSQL = $SQLModel->getOrders($prefix,$fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
-                $LabelsSQL = $SQLModel->getLabelItems_OrdersSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
+                $DataSQL = $SQLModel->getOrders($prefix,$fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
+                $LabelsSQL = $SQLModel->getLabelItems_OrdersSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
                 $row_aa_header = "Orders";
                 $row_bb_header = "Units";
                 $h1 = "Orders Report";
@@ -158,8 +180,8 @@ public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$ex
                 //Units
             case ($maptype == "units"):
     
-                $DataSQL = $SQLModel->getUnits($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
-                $LabelsSQL = $SQLModel->getLabelItems_UnitsSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
+                $DataSQL = $SQLModel->getUnits($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
+                $LabelsSQL = $SQLModel->getLabelItems_UnitsSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
                 $row_aa_header = "Units";
                 $row_bb_header = "Orders";
                 $h1 = "Units Sold Report";
@@ -171,8 +193,8 @@ public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$ex
                 //Values
             case ($maptype == "totalvalues"):
     
-                $DataSQL = $SQLModel->getTotalValues($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
-                $LabelsSQL = $SQLModel->getLabelItems_TotalValuesSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
+                $DataSQL = $SQLModel->getTotalValues($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
+                $LabelsSQL = $SQLModel->getLabelItems_TotalValuesSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
                 $row_aa_header = "Tot Val";
                 $row_bb_header = "Avg Val";
                 $h1 = "Total Sales Values Report";
@@ -186,8 +208,8 @@ public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$ex
                 //Refunds
             case ($maptype == "refunds"):
                  
-                $DataSQL = $SQLModel->getRefunds($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
-                $LabelsSQL = $SQLModel->getLabelItems_RefundsSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
+                $DataSQL = $SQLModel->getRefunds($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
+                $LabelsSQL = $SQLModel->getLabelItems_RefundsSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
                 $row_aa_header = "Qty";
                 $row_bb_header = "Value";
                 $h1 = "Refunds Report";
@@ -201,8 +223,8 @@ public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$ex
                 //Customers
             case ($maptype == "customers"):
     
-                $DataSQL = $SQLModel->getCustomers($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
-                $LabelsSQL = $SQLModel->getLabelItems_CustomersSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
+                $DataSQL = $SQLModel->getCustomers($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
+                $LabelsSQL = $SQLModel->getLabelItems_CustomersSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
                 $row_aa_header = "No Of";
                 $row_bb_header = "Spend";
                 $h1 = "Customers Report";
@@ -216,8 +238,8 @@ public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$ex
                 //Delivery Costs
             case ($maptype == "deliverycost"):
                  
-                $DataSQL = $SQLModel->getDeliverycosts($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
-                $LabelsSQL = $SQLModel->getLabelItems_DeliverycostsSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
+                $DataSQL = $SQLModel->getDeliverycosts($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
+                $LabelsSQL = $SQLModel->getLabelItems_DeliverycostsSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
                 $row_aa_header = "Qty";
                 $row_bb_header = "Value";
                 $h1 = "Delivery Costs Report";
@@ -230,8 +252,8 @@ public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$ex
 
                 //Default
             case ($maptype == "-1"):
-                $DataSQL = $SQLModel->getOrders($prefix,"", "", $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
-                $LabelsSQL = $SQLModel->getLabelItems_OrdersSQL($prefix,"","", $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
+                $DataSQL = $SQLModel->getOrders($prefix,"", "", $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
+                $LabelsSQL = $SQLModel->getLabelItems_OrdersSQL($prefix,"","", $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
                 $row_aa_header = "Orders";
                 $row_bb_header = "Units";
                 $h1 = "Orders Report";
@@ -334,7 +356,7 @@ public function getHighlightColour(){
     if($LastMapType != $maptype){
         $highlight_colour = $defaultHighlightColour;
     }else{
-        $highlight_colour = $this->getRequest()->getParam('highlight_colour',$defaultHighlightColour);
+            $highlight_colour = $this->getRequest()->getParam('highlight_colour', $defaultHighlightColour);
     }
     
     return $highlight_colour;
@@ -428,8 +450,8 @@ public function getMapType(){
 }
 
 public function getMapData() {
-    global $row_aa_header,$row_bb_header,$h1;
-    
+    global $row_aa_header,$row_bb_header,$h1,$country_code;
+
     $read = Mage::getSingleton('core/resource')->getConnection('core_read');
     $prefix = Mage::getConfig()->getTablePrefix();
     $fromdate = $this->getFromDate();
@@ -439,8 +461,6 @@ public function getMapData() {
     $extendedsql1 = '';
     $extendedsql2 = '';
     $areacodeprefix = '';
-    $pathmap = 'UK';
-    
     $productsreq = $this->getSelectedProducts();
     $products = implode(",",$productsreq);
     $allproducts = strpos($products,'*');
@@ -463,7 +483,7 @@ public function getMapData() {
         $extendedsql5 = "AND ".$prefix."sales_flat_order.coupon_code IN ('".$coupon_rule_codes_imploded."')";
     }
     
-    $DataSQL = $this->getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$extendedsql1,$extendedsql2,$extendedsq13,$extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
+    $DataSQL = $this->getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$extendedsql1,$extendedsql2,$extendedsq13,$extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
     $row_aa_header = $DataSQL['row_aa_header'];
     $row_bb_header = $DataSQL['row_bb_header'];
     $h1 = $DataSQL['h1'];
@@ -543,6 +563,7 @@ public function getSelectedAllOrdersRelative(){
 
 public function getSVG() {
     global $h1, $reqfromdate,$reqtodate,$allOrdersCount,$rm_footer;
+    $svgconfig = $this->svgconfig;
     $allOrdersCount = $this->getAllOrdersCount($reqfromdate,$reqtodate);
     $maptype = $this->getMapType();
     $store_names = $this->getStoreNames();
@@ -555,6 +576,17 @@ public function getSVG() {
     }
     $rm_footer = "Stores: $store_names | Products: $product_names | Promotion: $ruleNames";
     $svg_data_array = array(
+        "svg_id" => $svgconfig[0]['map_svg_id'],
+        "svg_xmlns" => $svgconfig[0]['map_svg_xmlns'],
+        "svg_version" => $svgconfig[0]['map_svg_version'],
+        "svg_width" => $svgconfig[0]['map_svg_width'],
+        "svg_height" => $svgconfig[0]['map_svg_height'],
+        "svg_style" => $svgconfig[0]['map_svg_style'],
+        "svg_transform" => $svgconfig[0]['map_svg_transform'],
+        "svg_viewbox" => $svgconfig[0]['map_svg_viewbox'],
+        "svg_viewport" => $svgconfig[0]['map_svg_viewport'],
+        "svg_g_transform" => $svgconfig[0]['map_svg_g_transform'],
+        "svg_g_labels_transform" => $svgconfig[0]['map_svg_g_labels_transform'],
         "svg_header" => $rm_header,
         "svg_footer"    => $rm_footer
     );
@@ -564,7 +596,7 @@ public function getSVG() {
 }
 
 public function getLabelItems($areacodeprefix) {
-    global $label_aa_header,$label_bb_header,$label_h1;
+    global $label_aa_header,$label_bb_header,$label_h1,$country_code;
 
     $read = Mage::getSingleton('core/resource')->getConnection('core_read');
     $prefix = Mage::getConfig()->getTablePrefix();
@@ -574,7 +606,6 @@ public function getLabelItems($areacodeprefix) {
     $maptype = $this->getMapType();
     $extendedsql1 = '';
     $extendedsql2 = '';
-    $pathmap = 'UK';
     $productsreq = $this->getSelectedProducts();
     $products = implode(",",$productsreq);
     $allproducts = strpos($products,'*');
@@ -596,7 +627,7 @@ public function getLabelItems($areacodeprefix) {
         $extendedsql5 = "AND ".$prefix."sales_flat_order.coupon_code IN ('".$coupon_rule_codes_imploded."')";
     }
     
-    $DataSQL = $this->getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$extendedsql1,$extendedsql2,$extendedsq13,$extendedsql4,$extendedsql5,$areacodeprefix,$pathmap);
+    $DataSQL = $this->getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$extendedsql1,$extendedsql2,$extendedsq13,$extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
     $label_aa_header = $DataSQL['label_aa_header'];
     $label_bb_header = $DataSQL['label_bb_header'];
     $label_h1 = $DataSQL['label_h1'];
@@ -637,7 +668,8 @@ Mage::getSingleton('core/session')->setMapType($maptype);
 }
 
 public function getPaths() {
-    global $allOrdersCount;
+    global $allOrdersCount,$country_code;
+    $country_code = $this->getMapByCountryCode();
     $map_colour = $this->getMapColour();
     $highlight_colour = $this->getHighlightColour();
     $results = $this->getMapData();
@@ -659,7 +691,8 @@ public function getPaths() {
 }
 
 public function getMapLabeling(){
-    $map_lables = $this->getTxtPths();
+    global $country_code;
+    $map_lables = $this->getTxtPths($country_code);
     return $map_lables;
 }
 
@@ -747,32 +780,10 @@ public function getOpaqueness($aa,$max) {
         
 }
 
-public function color_inverse($color){
-    $color = str_replace('#', '', $color);
-    if (strlen($color) != 6){ return '000000'; }
-    $rgb = '';
-    for ($x=0;$x<3;$x++){
-        $c = 255 - hexdec(substr($color,(2*$x),2));
-        $c = ($c < 0) ? 0 : dechex($c);
-        $rgb .= (strlen($c) < 2) ? '0'.$c : $c;
-    }
-    return '#'.$rgb;
-}
-
-public function oppColour($c, $inverse=false){
-    if(strlen($c)== 3)
-    {
-        $c = $c{0}.$c{0}.$c{1}.$c{1}.$c{2}.$c{2};
-    }
-    if ($inverse)
-    {
-        $r = (strlen($r=dechex(255-hexdec($c{0}.$c{1})))<2)?'0'.$r:$r;
-        $g = (strlen($g=dechex(255-hexdec($c{2}.$c{3})))<2)?'0'.$g:$g;
-        $b = (strlen($b=dechex(255-hexdec($c{4}.$c{5})))<2)?'0'.$b:$b;
-        return $r.$g.$b;
-    } else
-    {
-        return array_sum(array_map('hexdec', str_split($c, 2))) > 255*1.5 ? '000000' : 'FFFFFF';
-    }
+function __construct() {
+    $country_code = $this->getMapByCountryCode();
+    $this->paths = $this->getMapPaths($country_code);
+    $this->areas = $this->getAreas($country_code);
+    $this->svgconfig = $this->getSvgConfig($country_code);
 }
 }
