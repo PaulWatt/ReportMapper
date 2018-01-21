@@ -4,19 +4,19 @@
  * Class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
  * ReportMapper - Sales and Marketing Reporting Tool for Magento 1x
  * @category ReportMapper
- * @package	ReportMapper_SalesReportMaps
- * @version	1.0.0
- * @created	10th January 2018 3.00pm
- * @author		Paul Watt <support@reportmapper.com>
- * @purpose	ReportMapper block
- * @copyright	Copyright (c) 2018 ReportMapper.com
- * @license	http://opensource.org/licenses/osl-3.0.php  Open Software License
+ * @package ReportMapper_SalesReportMaps
+ * @version 1.0.0
+ * @created 10th January 2018 3.00pm
+ * @author Paul Watt <support@reportmapper.com>
+ * @purpose ReportMapper block
+ * @copyright Copyright (c) 2018 ReportMapper.com
+ * @license http://opensource.org/licenses/osl-3.0.php  Open Software License
  */
 
 class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
 {
 
-    public function getOrders($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4, $extendedsql5, $areacodeprefix, $country_code)
+    public function getOrders($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql5, $country_code)
     {
         $orders = 'SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(left(postcode,3)),"0",""),"1",""),"2",""),"3",""),"4",""),"5",""),"6",""),"7",""),"8",""),"9","") AS pc,
                     COUNT(' . $prefix . 'sales_flat_order_address.postcode) AS aa,
@@ -32,7 +32,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
         return $orders;
     }
 
-    public function getLabelItems_OrdersSQL($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4, $extendedsql5, $areacodeprefix, $country_code)
+    public function getLabelItems_OrdersSQL($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $areacodeprefix, $country_code)
     {
         $LabelItemsSQL = 'SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(left(postcode,3)),"0",""),"1",""),"2",""),"3",""),"4",""),"5",""),"6",""),"7",""),"8",""),"9","") AS pc,
                         ' . $prefix . 'sales_flat_order_item.product_id AS pid,
@@ -50,7 +50,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
         return $LabelItemsSQL;
     }
 
-    public function getUnits($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4, $extendedsql5, $areacodeprefix, $country_code)
+    public function getUnits($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql5, $country_code)
     {
         $units = 'SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(left(`postcode`,3)),"0",""),"1",""),"2",""),"3",""),"4",""),"5",""),"6",""),"7",""),"8",""),"9","") AS pc,
                 COUNT(' . $prefix . 'sales_flat_order_address.postcode) AS bb,
@@ -65,7 +65,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
         return $units;
     }
 
-    public function getLabelItems_UnitsSQL($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4, $extendedsql5, $areacodeprefix, $country_code)
+    public function getLabelItems_UnitsSQL($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $areacodeprefix, $country_code)
     {
         $LabelItemsSQL = 'SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(left(postcode,3)),"0",""),"1",""),"2",""),"3",""),"4",""),"5",""),"6",""),"7",""),"8",""),"9","") AS pc,
                         ' . $prefix . 'sales_flat_order_item.product_id AS pid,
@@ -83,7 +83,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
         return $LabelItemsSQL;
     }
 
-    public function getTotalValues($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4, $extendedsql5, $areacodeprefix, $country_code)
+    public function getTotalValues($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql5, $country_code)
     {
         $totalvalues = 'SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(left(`postcode`,3)),"0",""),"1",""),"2",""),"3",""),"4",""),"5",""),"6",""),"7",""),"8",""),"9","") AS pc,
                     ROUND(SUM(' . $prefix . 'sales_flat_order.total_paid),2) AS aa,
@@ -100,7 +100,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
         return $totalvalues;
     }
 
-    public function getLabelItems_TotalValuesSQL($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4, $extendedsql5, $areacodeprefix, $country_code)
+    public function getLabelItems_TotalValuesSQL($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $areacodeprefix, $country_code)
     {
         $LabelItemsSQL = 'SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(left(postcode,3)),"0",""),"1",""),"2",""),"3",""),"4",""),"5",""),"6",""),"7",""),"8",""),"9","") AS pc,
                         ' . $prefix . 'sales_flat_order_item.product_id AS pid,
@@ -118,7 +118,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
         return $LabelItemsSQL;
     }
 
-    public function getRefunds($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4, $extendedsql5, $areacodeprefix, $country_code)
+    public function getRefunds($prefix, $fromdate, $todate, $addresstype, $extendedsql3, $extendedsql5, $country_code)
     {
         $refunds = 'SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(left(`postcode`,3)),"0",""),"1",""),"2",""),"3",""),"4",""),"5",""),"6",""),"7",""),"8",""),"9","") AS pc,
                         COUNT(' . $prefix . 'sales_flat_creditmemo.grand_total) AS aa,
@@ -135,7 +135,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
         return $refunds;
     }
 
-    public function getLabelItems_RefundsSQL($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4, $extendedsql5, $areacodeprefix, $country_code)
+    public function getLabelItems_RefundsSQL($prefix, $fromdate, $todate, $addresstype, $extendedsql3, $areacodeprefix, $country_code)
     {
         $LabelItemsSQL = 'SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
                         UPPER(LEFT(postcode,3)),"0",""),"1",""),"2",""),"3",""),"4",""),"5",""),"6",""),"7",""),"8",""),"9","") AS pc, 
@@ -155,7 +155,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
         return $LabelItemsSQL;
     }
 
-    public function getCustomers($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4, $extendedsql5, $areacodeprefix, $country_code)
+    public function getCustomers($prefix, $fromdate, $todate, $extendedsql4, $extendedsql5, $country_code)
     {
         $customers = 'SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(LEFT(`value`,3)),"0",""),"1",""),"2",""),"3",""),"4",""),"5",""),"6",""),"7",""),"8",""),"9","") AS pc,
                     ' . $prefix . 'customer_address_entity_varchar.entity_id AS aa,
@@ -163,7 +163,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
                     FROM ' . $prefix . 'customer_address_entity_varchar
                     INNER JOIN ' . $prefix . 'customer_entity ON ' . $prefix . 'customer_address_entity_varchar.entity_id = ' . $prefix . 'customer_entity.entity_id
                     INNER JOIN ' . $prefix . 'sales_flat_order ON ' . $prefix . 'customer_address_entity_varchar.entity_id = ' . $prefix . 'sales_flat_order.customer_id
-                    WHERE attribute_id = "30" 
+                    WHERE ' . $prefix . 'customer_address_entity_varchar.attribute_id = "30" /*OR (' . $prefix . 'customer_address_entity_varchar.attribute_id = "27" AND ' . $prefix . 'customer_address_entity_varchar.value = "'.$country_code.'") */
                     ' . $extendedsql4 . $extendedsql5 . '
                     AND ' . $prefix . 'customer_entity.created_at BETWEEN "' . $fromdate . '" AND "' . $todate . '" 
                     GROUP BY UPPER(pc)
@@ -171,7 +171,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
         return $customers;
     }
 
-    public function getLabelItems_CustomersSQL($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4, $extendedsql5, $areacodeprefix, $country_code)
+    public function getLabelItems_CustomersSQL($prefix, $fromdate, $todate, $addresstype, $extendedsql4, $areacodeprefix, $country_code)
     {
         $LabelItemsSQL = 'SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(left(postcode,3)),"0",""),"1",""),"2",""),"3",""),"4",""),"5",""),"6",""),"7",""),"8",""),"9","") AS pc,
                         ' . $prefix . 'sales_flat_order_item.product_id AS pid,
@@ -179,7 +179,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
                         ROUND(SUM(' . $prefix . 'sales_flat_order_item.qty_ordered),0) AS label_bb
                         FROM ' . $prefix . 'sales_flat_order_address
                         LEFT JOIN ' . $prefix . 'sales_flat_order_item ON ' . $prefix . 'sales_flat_order_address.parent_id = ' . $prefix . 'sales_flat_order_item.order_id
-                        WHERE address_type = "' . $addresstype . '" 
+                        WHERE address_type = "' . $addresstype . '" AND ' . $prefix . 'sales_flat_order_address.country_id = "'.$country_code.'" 
                         AND REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(LEFT(postcode,3)),"0",""),"1",""),"2",""),"3",""),"4",""),"5",""),"6",""),"7",""),"8",""),"9","") = UPPER("' . $areacodeprefix . '") 
                         ' . $extendedsql4 . '
                         AND ' . $prefix . 'sales_flat_order_item.created_at BETWEEN "' . $fromdate . '" AND "' . $todate . '" 
@@ -188,7 +188,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
         return $LabelItemsSQL;
     }
 
-    public function getDeliveryCosts($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4, $extendedsql5, $areacodeprefix, $country_code)
+    public function getDeliveryCosts($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql5, $country_code)
     {
         $delivery_costs = 'SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(left(`postcode`,3)),"0",""),"1",""),"2",""),"3",""),"4",""),"5",""),"6",""),"7",""),"8",""),"9","") AS pc,
                           COUNT(' . $prefix . 'sales_flat_order.shipping_incl_tax) AS aa,
@@ -204,7 +204,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
         return $delivery_costs;
     }
 
-    public function getLabelItems_DeliverycostsSQL($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4, $extendedsql5, $postcodeprefix, $country_code)
+    public function getLabelItems_DeliverycostsSQL($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $areacodeprefix, $country_code)
     {
         $LabelItemsSQL = 'SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(left(postcode,3)),"0",""),"1",""),"2",""),"3",""),"4",""),"5",""),"6",""),"7",""),"8",""),"9","") AS pc,
                         ' . $prefix . 'sales_flat_order_item.product_id AS pid,
@@ -213,7 +213,7 @@ class ReportMapper_SalesReportMaps_Model_Adminhtml_Sqls
                         FROM ' . $prefix . 'sales_flat_order_address
                         LEFT JOIN ' . $prefix . 'sales_flat_order_item ON ' . $prefix . 'sales_flat_order_address.parent_id = ' . $prefix . 'sales_flat_order_item.order_id
                         WHERE ' . $prefix . 'sales_flat_order_address.country_id = "'.$country_code.'" AND address_type = "' . $addresstype . '"
-                        AND REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(LEFT(postcode,3)),"0",""),"1",""),"2",""),"3",""),"4",""),"5",""),"6",""),"7",""),"8",""),"9","") = UPPER("' . $postcodeprefix . '") 
+                        AND REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(UPPER(LEFT(postcode,3)),"0",""),"1",""),"2",""),"3",""),"4",""),"5",""),"6",""),"7",""),"8",""),"9","") = UPPER("' . $areacodeprefix . '") 
                         ' . $extendedsql1 . '
                         AND ' . $prefix . 'sales_flat_order_item.created_at BETWEEN "' . $fromdate . '" AND "' . $todate . '" 
                         GROUP BY pc, ' . $prefix . 'sales_flat_order_item.product_id

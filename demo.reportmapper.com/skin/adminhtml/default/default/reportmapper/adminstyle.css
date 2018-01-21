@@ -175,8 +175,8 @@ div.row_div_even {
     border-bottom: 1px solid #cccccc;
 }
 
-.postcode_div .row_div_odd cell_div,
-.postcode_div .row_div_odd cell_div {
+.postcode_div .row_div_odd .cell_div,
+.postcode_div .row_div_odd .cell_div {
     text-align: center;
 }
 

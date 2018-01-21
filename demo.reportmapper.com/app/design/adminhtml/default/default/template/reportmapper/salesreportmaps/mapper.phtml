@@ -102,7 +102,7 @@
             $aa=$colour_results['aa'];
             ?>
         <div class="<?php echo $rowcolour; ?>" id="divrow_<?php echo $areacode; ?>" onmouseover="ChangeBackgroundColor(this,'<?php echo $table_data['table_highlight_colour']; ?>')" onmouseout="RestoreBackgroundColor(this,'<?php echo $table_data['table_map_colour']; ?>','<?php echo $rowcolour; ?>')">
-        <div class="bgcol" style="background-color:<?php echo $table_data['table_map_colour']; ?> !important;"><div style="opacity:<?php echo $opacitycss; ?>; background:white !important; width:50px; height:25px; margin:0px;"></div></div>
+        <div class="bgcol" style="background-color:<?php echo $table_data['table_map_colour']; ?> !important;"><div style="opacity:<?php echo $opacitycss; ?>; background:white !important; width:100%; height:100%; margin:0;"></div></div>
         <div class="row_area"><?php echo $areacode; ?></div>
         <div class="row_a"><?php echo $table_data['table_currencyA'] ?><?php echo $aa; ?></div>
         <div class="row_b"><?php echo $table_data['table_currencyB'] ?><?php echo $bb; ?></div>

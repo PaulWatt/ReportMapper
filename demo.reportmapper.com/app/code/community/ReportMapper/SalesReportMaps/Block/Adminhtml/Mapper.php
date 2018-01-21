@@ -4,17 +4,16 @@
  * Class ReportMapper_SalesReportMaps_Block_Adminhtml_Mapper
  * ReportMapper - Sales and Marketing Reporting Tool for Magento 1x
  * @category ReportMapper
- * @package	ReportMapper_SalesReportMaps
- * @version	1.0.0
- * @created	10th January 2018 3.00pm
+ * @package ReportMapper_SalesReportMaps
+ * @version 1.0.0
+ * @created 10th January 2018 3.00pm
  * @author Paul Watt <support@reportmapper.com>
- * @purpose	ReportMapper block
+ * @purpose ReportMapper block
  * @copyright Copyright (c) 2018 ReportMapper.com
- * @license	http://opensource.org/licenses/osl-3.0.php  Open Software License
+ * @license http://opensource.org/licenses/osl-3.0.php  Open Software License
  */
 
-class ReportMapper_SalesReportMaps_Block_Adminhtml_Mapper
-    extends Mage_Core_Block_Template
+class ReportMapper_SalesReportMaps_Block_Adminhtml_Mapper extends Mage_Adminhtml_Block_Template
 {
 
 public function getStoreNames(){
@@ -167,8 +166,8 @@ public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$ex
             //Orders
             case ($maptype == "orders"):
                  
-                $DataSQL = $SQLModel->getOrders($prefix,$fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
-                $LabelsSQL = $SQLModel->getLabelItems_OrdersSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
+                $DataSQL = $SQLModel->getOrders($prefix,$fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql5,$country_code);
+                $LabelsSQL = $SQLModel->getLabelItems_OrdersSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1,$areacodeprefix,$country_code);
                 $row_aa_header = "Orders";
                 $row_bb_header = "Units";
                 $h1 = "Orders Report";
@@ -180,8 +179,8 @@ public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$ex
                 //Units
             case ($maptype == "units"):
     
-                $DataSQL = $SQLModel->getUnits($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
-                $LabelsSQL = $SQLModel->getLabelItems_UnitsSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
+                $DataSQL = $SQLModel->getUnits($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql5,$country_code);
+                $LabelsSQL = $SQLModel->getLabelItems_UnitsSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1,$areacodeprefix,$country_code);
                 $row_aa_header = "Units";
                 $row_bb_header = "Orders";
                 $h1 = "Units Sold Report";
@@ -193,8 +192,8 @@ public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$ex
                 //Values
             case ($maptype == "totalvalues"):
     
-                $DataSQL = $SQLModel->getTotalValues($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
-                $LabelsSQL = $SQLModel->getLabelItems_TotalValuesSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
+                $DataSQL = $SQLModel->getTotalValues($prefix, $fromdate, $todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql5,$country_code);
+                $LabelsSQL = $SQLModel->getLabelItems_TotalValuesSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1,$areacodeprefix,$country_code);
                 $row_aa_header = "Tot Val";
                 $row_bb_header = "Avg Val";
                 $h1 = "Total Sales Values Report";
@@ -208,8 +207,8 @@ public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$ex
                 //Refunds
             case ($maptype == "refunds"):
                  
-                $DataSQL = $SQLModel->getRefunds($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
-                $LabelsSQL = $SQLModel->getLabelItems_RefundsSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
+                $DataSQL = $SQLModel->getRefunds($prefix,$fromdate,$todate,$addresstype,$extendedsql3,$extendedsql5,$country_code);
+                $LabelsSQL = $SQLModel->getLabelItems_RefundsSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql3, $areacodeprefix,$country_code);
                 $row_aa_header = "Qty";
                 $row_bb_header = "Value";
                 $h1 = "Refunds Report";
@@ -223,8 +222,8 @@ public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$ex
                 //Customers
             case ($maptype == "customers"):
     
-                $DataSQL = $SQLModel->getCustomers($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
-                $LabelsSQL = $SQLModel->getLabelItems_CustomersSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
+                $DataSQL = $SQLModel->getCustomers($prefix,$fromdate,$todate, $extendedsql4,$extendedsql5,$country_code);
+                $LabelsSQL = $SQLModel->getLabelItems_CustomersSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql4,$areacodeprefix,$country_code);
                 $row_aa_header = "No Of";
                 $row_bb_header = "Spend";
                 $h1 = "Customers Report";
@@ -238,9 +237,9 @@ public function getMapSwitch($maptype,$prefix,$fromdate,$todate,$addresstype,$ex
                 //Delivery Costs
             case ($maptype == "deliverycost"):
                  
-                $DataSQL = $SQLModel->getDeliverycosts($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql3,$extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
-                $LabelsSQL = $SQLModel->getLabelItems_DeliverycostsSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2, $extendedsql3, $extendedsql4,$extendedsql5,$areacodeprefix,$country_code);
-                $row_aa_header = "Qty";
+                $DataSQL = $SQLModel->getDeliverycosts($prefix,$fromdate,$todate, $addresstype, $extendedsql1, $extendedsql2,$extendedsql5,$country_code);
+                $LabelsSQL = $SQLModel->getLabelItems_DeliverycostsSQL($prefix,$fromdate,$todate, $addresstype, $extendedsql1,$areacodeprefix,$country_code);
+                $row_aa_header = "Del's";
                 $row_bb_header = "Value";
                 $h1 = "Delivery Costs Report";
                 $label_aa_header = "Products";
@@ -356,7 +355,7 @@ public function getHighlightColour(){
     if($LastMapType != $maptype){
         $highlight_colour = $defaultHighlightColour;
     }else{
-            $highlight_colour = $this->getRequest()->getParam('highlight_colour', $defaultHighlightColour);
+        $highlight_colour = $this->getRequest()->getParam('highlight_colour', $defaultHighlightColour);
     }
     
     return $highlight_colour;
@@ -413,7 +412,7 @@ public function getMapColour(){
 }
 
 public function getStoreIds(){
-    $store_ids = $this->getRequest()->getParam('store_ids','0');
+        $store_ids = $this->getRequest()->getParam('store_ids','0');
     return $store_ids;
 }
 
