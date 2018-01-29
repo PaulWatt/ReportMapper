@@ -84,7 +84,7 @@ p.rm_footer{
 	position:relative;
 	background-color: white !important;
 	margin: 0;
-	padding; 0;
+	padding: 0;
 }
 
 .clearfix:before, .clearfix:after{

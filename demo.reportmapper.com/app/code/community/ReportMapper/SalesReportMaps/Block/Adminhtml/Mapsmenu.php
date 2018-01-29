@@ -15,50 +15,47 @@
 
 class ReportMapper_SalesReportMaps_Block_Adminhtml_Mapsmenu extends Mage_Adminhtml_Block_Widget_Form
 {
-    public function getHighlightColour(){
-        $highlight_colour = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper')->getHighlightColour();
-        return $highlight_colour;
+    public function getFromDate()
+    {
+        $fromDate = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper')->getFromDate();
+        $fromDate = date("d/m/Y", strtotime($fromDate));
+        return $fromDate;
     }
     
-    public function getMapColour(){
-        $map_colour = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper')->getMapColour();
-        return $map_colour;
-    }
-    
-    public function getFromDate(){
-        $from_date = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper')->getFromDate();
-        $from_date = date("d/m/Y", strtotime($from_date));
-        return $from_date;
-    }
-    
-    public function getToDate(){
-        $to_date = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper')->getToDate();
-        $to_date = date("d/m/Y", strtotime($to_date));
-        return $to_date;
+    public function getToDate()
+    {
+        $toDate = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper')->getToDate();
+        $toDate = date("d/m/Y", strtotime($toDate));
+        return $toDate;
     }
 
-    public function getPSKU(){
-        $access_key = Mage::getStoreConfig('user_data/authorisation/access_key');
-        $options = array(CURLOPT_HEADER =>false,'location' => 'http://www.reportmapper.com/validate_rm.php',
-            'uri' => 'http://www.reportmapper.com');
-        $api = new SoapClient(NULL, $options);
-        $cururl = Mage::getUrl('admin');
-        $p = $api->psku($cururl,$access_key);
+    public function getPSKU()
+    {
+        $htmlMpr = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper');
+        $accessKey = Mage::getStoreConfig('user_data/authorisation/access_key');
+        $curURL = Mage::getUrl('admin');
+        $p = $htmlMpr->getPSKU($curURL, $accessKey);
         return $p;
     }
 
   protected function _prepareForm()
   {
-   $form = new Varien_Data_Form(array(
-        'id'        => 'my_form',
-        'action'    => Mage::helper('core/url')->getCurrentUrl(),
-        'method'    => 'post'
-    ));
+      $htmlMpr = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper');
+      $form = new Varien_Data_Form(
+          array(
+              'id' => 'my_form',
+              'action' => Mage::helper('core/url')->getCurrentUrl(),
+              'method' => 'post'
+          )
+      );
       $psku = $this->getPSKU();
       $this->setForm($form);
       $form->setUseContainer(true);
       $fieldset = $form->addFieldset('my_form', array('legend'=>'Report Map Options','class' => 'mapform'));
-      $fieldset->addField('fromdate', 'date', array(
+      $fieldset->addField(
+          'fromdate',
+          'date',
+          array(
           'class' => 'required-entry',
           'name' => 'fromdate',
           'after_element_html' => 'From',
@@ -66,10 +63,13 @@ class ReportMapper_SalesReportMaps_Block_Adminhtml_Mapsmenu extends Mage_Adminht
           'image' => $this->getSkinUrl('images/grid-cal.gif'),
           'format' => Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT),
           'value' => $this->getFromDate()
-      
-      ));
-      
-      $fieldset->addField('todate', 'date', array(
+          )
+      );
+
+      $fieldset->addField(
+          'todate',
+          'date',
+          array(
           'class' => 'required-entry',
           'name' => 'todate',
           'after_element_html' => 'To',
@@ -77,38 +77,44 @@ class ReportMapper_SalesReportMaps_Block_Adminhtml_Mapsmenu extends Mage_Adminht
           'image' => $this->getSkinUrl('images/grid-cal.gif'),
           'format' => Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT),
           'value' => $this->getToDate()
-      ));
+          )
+      );
 
-      $dropdown_vals = Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm(false, true);
-      if($psku[1] > 0){
-          array_splice($dropdown_vals,0,1);
-          array_splice($dropdown_vals,$psku[1]+1,100);
+      $dropdownVals = Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm(false, true);
+      if ($psku[1] > 0) {
+          array_splice($dropdownVals, 0, 1);
+          array_splice($dropdownVals, $psku[1]+1, 100);
       }
 
       if (!Mage::app()->isSingleStoreMode()) {
           $selectedStores = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper')->getStoreIds();
-          $fieldset->addField('store_ids', 'select', array(
-              
+          $fieldset->addField(
+              'store_ids',
+              'select',
+              array(
+
               'name'      => 'store_ids',
               'title'     => Mage::helper('cms')->__('Store View'),
               'required'  => true,
-              'values'    => $dropdown_vals,
+              'values'    => $dropdownVals,
               'value'   => $selectedStores,
               'tabindex' => 1
-              
-          ));
-
-      }
-      else {
-          $fieldset->addField('store_id', 'hidden', array(
+              )
+          );
+      } else {
+          $fieldset->addField(
+              'store_id',
+              'hidden',
+              array(
               'name'      => 'stores[]',
               'value'     => Mage::app()->getStore(true)->getId()
-          ));
+              )
+          );
       }
-      
+
       $maptype = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper')->getMapType();
-      
-      $dropdown_vals = array(
+
+      $dropdownVals = array(
               '-1' => 'Select Report Type',
               'orders' => 'Sales Orders',
               'units' => 'Units Sold',
@@ -118,39 +124,50 @@ class ReportMapper_SalesReportMaps_Block_Adminhtml_Mapsmenu extends Mage_Adminht
               'deliverycost' => 'Delivery Cost'
           );
 
-      if($psku[2] > 0){
-          array_splice($dropdown_vals,$psku[2]+1,10000);
+      if ($psku[2] > 0) {
+          array_splice($dropdownVals, $psku[2]+1, 10000);
       }
-      
-      $fieldset->addField('maptype', 'select', array(
+
+      $fieldset->addField(
+          'maptype',
+          'select',
+          array(
           'class'     => 'required-entry',
           'required'  => true,
           'name'      => 'maptype',
           'onclick' => "",
           'onchange' => "",
           'value'  => $maptype,
-          'values' => $dropdown_vals,
+          'values' => $dropdownVals,
           'disabled' => false,
           'readonly' => false,
           'tabindex' => 2
-      ));
+          )
+      );
 
-     $selectedallordersrelative = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper')->getSelectedAllOrdersRelative();
-     $fieldset->addField('all_orders_relative', 'checkbox', array(
+     $seltdAllOrdRel = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper')->getSelectedAllOrdersRelative();
+     $fieldset->addField(
+         'all_orders_relative',
+         'checkbox',
+         array(
           'name'      => 'all_orders_relative',
-          'checked' => $selectedallordersrelative,
+          'checked' => $seltdAllOrdRel,
           'onclick' => "",
           'onchange' => "",
           'disabled' => false,
           'after_element_html' => '  <small>% relative to all data</small>',
           'tabindex' => 5
-      ));
-      $selectedaddresstype = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper')->getAddressType();
-      $fieldset->addField('addresstype', 'radios', array(
+         )
+     );
+      $seltdAddType = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper')->getAddressType();
+      $fieldset->addField(
+          'addresstype',
+          'radios',
+          array(
           'name'      => 'addresstype',
           'onclick' => "",
           'onchange' => "",
-          'value'  => $selectedaddresstype,
+          'value'  => $seltdAddType,
           'values' => array(
               array('value'=>'billing','label'=>'Billing'),
               array('value'=>'shipping','label'=>'Shipping'),
@@ -158,39 +175,43 @@ class ReportMapper_SalesReportMaps_Block_Adminhtml_Mapsmenu extends Mage_Adminht
           'disabled' => false,
           'readonly' => false,
           'tabindex' => 6
-      ));
-      
-      $productlist = array();
-      $productlist[] = array(
+          )
+      );
+
+      $productList = array();
+      $productList[] = array(
           'value' => '*', 'label' => Mage::helper('sales')->__('No Product Filter')
       );
-      
+
       $products = Mage::getResourceModel('catalog/product_collection')
       ->addAttributeToSelect(array('entity_id','sku', 'name', 'description'))
       ->setOrder('name', 'asc');
 
       foreach ($products as $product) {
-          $productlist[] = array(
+          $productList[] = array(
               'value' => $product->getId(), 'label' => $product->getName()
           );
       }
 
-      if($psku[4] > 0){
-          array_splice($productlist,0,1);
-          array_splice($productlist,$psku[4]+1,10000);
+      if ($psku[4] > 0) {
+          array_splice($productList, 0, 1);
+          array_splice($productList, $psku[4]+1, 10000);
       }
 
-      $selectedproducts = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper')->getSelectedProducts();
-      $fieldset->addField('products', 'multiselect',
+      $selectedProducts = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper')->getSelectedProducts();
+      $fieldset->addField(
+          'products',
+          'multiselect',
           array(
               'class' => 'required-entry',
               'required' => true,
-              'value'  => $selectedproducts,
-              'values' => $productlist,
+              'value'  => $selectedProducts,
+              'values' => $productList,
               'name' => 'products[]',
               'after_element_html' => '',
               'tabindex' => 7
-          ));
+          )
+      );
 
       $rulelist = array();
       $rulelist[] = array(
@@ -206,44 +227,59 @@ class ReportMapper_SalesReportMaps_Block_Adminhtml_Mapsmenu extends Mage_Adminht
           );
       }
 
-      $SelectedCouponRuleCodes = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper')->getSelectedCouponRuleCodes();
-      $fieldset->addField('coupon_rule_name', 'multiselect',
+      $selectedCouponRuleCodes = Mage::getBlockSingleton('reportmapper_salesreportmaps/adminhtml_mapper')->getSelectedCouponRuleCodes();
+      $fieldset->addField(
+          'coupon_rule_name',
+          'multiselect',
           array(
               'class' => 'required-entry',
               'required' => true,
-              'value' => $SelectedCouponRuleCodes,
+              'value' => $selectedCouponRuleCodes,
               'values' => $rulelist,
               'name' => 'coupon_rule_name[]',
               'after_element_html' => '',
               'tabindex' => 8
-      
-          ));
-      
-      $fieldset->addField('map_colour', 'text', array(
+
+          )
+      );
+
+      $fieldset->addField(
+          'map_colour',
+          'text',
+          array(
           'class'  => 'color {hash:true,required:false}',
           'required'  => false,
           'name'      => 'map_colour',
           'after_element_html' => 'Strength Colour',
-          'value'  => $this->getMapColour(),
+          'value'  => $htmlMpr->getMapColour(),
           'tabindex' => 9
-      ));
+          )
+      );
 
-      $fieldset->addField('highlight_colour', 'text', array(
+      $fieldset->addField(
+          'highlight_colour',
+          'text',
+          array(
           'class'  => 'color {hash:true,required:false}',
           'required'  => false,
           'name'      => 'highlight_colour',
           'after_element_html' => 'Highlight Colour<br><br><span>Clear colour fields to reset to default.</span><br>',
-          'value'  => $this->getHighlightColour(),
+          'value'  => $htmlMpr->getHighlightColour(),
           'tabindex' => 10
-      ));
+          )
+      );
 
-      $fieldset->addField('submit', 'submit', array(
+      $fieldset->addField(
+          'submit',
+          'submit',
+          array(
           'required'  => true,
           'value'  => 'Create Report',
           'class' => 'map_form_button',
           'after_element_html' => '</br></br>',
           'tabindex' => 11
-      ));
+          )
+      );
 
       return parent::_prepareForm();
   }

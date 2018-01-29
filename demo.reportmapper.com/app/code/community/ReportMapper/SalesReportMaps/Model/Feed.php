@@ -29,7 +29,7 @@ class ReportMapper_SalesReportMaps_Model_Feed extends Mage_AdminNotification_Mod
 
     public function setLastUpdate()
     {
-        Mage::app()->saveCache(time(), 'reportmapper_salesreportmaps_lastcheck');
-        return $this;
+
+        return Mage::app()->saveCache(time(), 'reportmapper_salesreportmaps_lastcheck');
     }
 }
